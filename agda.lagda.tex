@@ -602,6 +602,7 @@ mathematics.\footnote{To write $\prod$, type
 \begin{code}[number]
 data _×_ (A B : Set) : Set where
   _,_ : A → B → A × B
+infixr 4 _,_
 \end{code}
 We can define functions on pairs by pattern matching, for example:
 \begin{code}[number]
@@ -909,7 +910,7 @@ Implement the function $\fun{tail} : \{A : \ty{}\}
 \marginnote{
 \begin{exercise}
 Implement the function $\fun{dotProduct} : \{ n :
-\Nat \} \to \Vec\ \Nat\ n \to \Vec\ \Nat\ n \to Nat$ that calculates
+\Nat \} \to \Vec\ \Nat\ n \to \Vec\ \Nat\ n \to \Nat$ that calculates
 the `dot product' (or scalar product) of two vectors. Note that the
 type of the function enforces the two vectors to have the same length!
 \end{exercise}
@@ -1005,7 +1006,7 @@ having to change the return type in any way.
 \marginnote{
 \begin{exercise}
 Implement a function $\fun{putVec} : \{ A : \ty{}
-\} \{ n : \Nat \} \to \Fin n \to A \to \Vec\ A\ n \to \Vec\ A\ n$ that
+\} \{ n : \Nat \} \to \Fin\ n \to A \to \Vec\ A\ n \to \Vec\ A\ n$ that
 sets the value at the given position in the vector to the given value,
 and leaves the rest of the vector unchanged.
 \end{exercise}
