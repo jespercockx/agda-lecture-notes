@@ -15,6 +15,8 @@
 \usepackage{booktabs}
 \usepackage{amsthm}
 
+\newcommand{\hrefu}[2]{\href{#1}{\nolinkurl{#2}}}
+
 \theoremstyle{definition}
 \newtheorem{exercise}{Exercise}[section]
 
@@ -207,9 +209,9 @@ as Agda).
 There are several ways to install Agda, but unfortunately none are
 very fast and simple. Here we describe how to install Agda from source
 using Stack.\footnote{Instructions for installing Stack can be found
-on \url{https://docs.haskellstack.org/en/stable/README/}.} Other ways
+on \hrefu{https://docs.haskellstack.org/en/stable/README/}{docs.haskellstack.org/en/stable/README}.} Other ways
 to install Agda can be found at
-\url{https://agda.readthedocs.io/en/latest/getting-started/installation.html}.
+\hrefu{https://agda.readthedocs.io/en/latest/getting-started/installation.html}{agda.readthedocs.io/en/latest/getting-started/installation.html}.
 To follow the rest of these notes, it is recommended that you use
 Agda version 2.6.0 or later.
 
@@ -222,13 +224,13 @@ This step will take a long time and a lot of memory to complete, and
 use up 4-5 GB of disk space for a fresh install.
 
 On Ubuntu Linux and similar systems (including
-WSL\footnote{\url{https://docs.microsoft.com/en-us/windows/wsl/install-win10}}
+WSL\footnote{\hrefu{https://docs.microsoft.com/en-us/windows/wsl/install-win10}{docs.microsoft.com/en-us/windows/wsl/install-win10}}
 on Windows) you can alternatively install a binary release by running
 `\texttt{sudo apt install agda}`.
 
 To write and edit Agda code, we recommend Visual Studio Code with the
 \texttt{agda-mode} extension.\footnote{You can get Visual Studio Code
-from \url{https://code.visualstudio.com/}. To install an extension,
+from \hrefu{https://code.visualstudio.com/}{code.visualstudio.com}. To install an extension,
 click the Extensions button on the left, enter the name of the
 extension, and click `install'.} Other IDEs with support for Agda are
 Emacs and Atom.
@@ -253,7 +255,7 @@ for Haskell. Agda also supports several backends for compilation,
 including a GHC backend and a JavaScript backend. A full ``Hello,
 world'' example for creating an executable from your Agda code can be
 found at
-\url{https://agda.readthedocs.io/en/v2.6.1.2/getting-started/hello-world.html}.}
+\hrefu{https://agda.readthedocs.io/en/v2.6.1.2/getting-started/hello-world.html}{agda.readthedocs.io/en/v2.6.1.2/getting-started/hello-world.html}.}
 
 \subsection{Syntactic differences with Haskell}
 
@@ -370,7 +372,7 @@ Next, we define addition $\fun{\_+\_}$ on natural numbers by pattern
 matching as follows:
 \marginnote{\paragraph{The Agda standard library.} You can find the definitions in this section --- as
 well as much more --- in Agda's standard library, which you can get from
-\url{https://github.com/agda/agda-stdlib}. In these notes, we will
+\hrefu{https://github.com/agda/agda-stdlib}{github.com/agda/agda-stdlib}. In these notes, we will
 not make use of the standard library and instead define everything
 from scratch.}
 
@@ -2607,42 +2609,42 @@ $\circ$& \texttt{\textbackslash{}o} \\
 \begin{itemize}
 
 \item The official Agda documentation.%
-  \footnote{\url{https://agda.readthedocs.io/en/}}
+  \footnote{\hrefu{https://agda.readthedocs.io/en/}{agda.readthedocs.io/en}}
 
 \item The Agda standard library.%
-  \footnote{\url{https://github.com/agda/agda-stdlib}}
+  \footnote{\hrefu{https://github.com/agda/agda-stdlib}{github.com/agda/agda-stdlib}}
 
 \item Philip Wadler and Wen Kokke: \emph{Programming Language
-  Foundations in Agda}\footnote{\url{https://plfa.github.io/}} (online
+  Foundations in Agda}\footnote{\hrefu{https://plfa.github.io/}{plfa.github.io}} (online
   book). This book focuses mainly on using Agda to explain core ideas
   from programming languages research, but it is also generally an
   excellent first introduction to Agda.
 
 \item Aaron Stump: \emph{Verified Functional Programming in Agda}%
-  \footnote{\url{https://www.morganclaypoolpublishers.com/catalog_Orig/product_info.php?cPath=24&products_id=908}}
+  \footnote{\hrefu{https://www.morganclaypoolpublishers.com/catalog_Orig/product_info.php?cPath=24&products_id=908}{morganclaypoolpublishers.com/catalog_Orig/product_info.php?cPath=24&products_id=908}}
   (physical book, first two chapters are freely available). This book
   also starts from the basics and builds towards using Agda as a
   language to implement and verify functional programs.
 
 \item Ulf Norell and James Chapman: \emph{Dependently Typed
   Programming in Agda}%
-  \footnote{\url{http://www.cse.chalmers.se/~ulfn/papers/afp08/tutorial.pdf}}
+  \footnote{\hrefu{http://www.cse.chalmers.se/~ulfn/papers/afp08/tutorial.pdf}{www.cse.chalmers.se/~ulfn/papers/afp08/tutorial.pdf}}
   (tutorial in \texttt{pdf} format).
 
 \item Ana Bove and Peter Dybjer: \emph{Dependent Types at Work}%
-  \footnote{\url{http://www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf}}
+  \footnote{\hrefu{http://www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf}{www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf}}
   (tutorial in \texttt{pdf} format).
 
 \item Andreas Abel: \emph{An Introduction ot Dependent Types and Agda}%
-  \footnote{\url{http://www2.tcs.ifi.lmu.de/~abel/DepTypes.pdf}} (lecture notes).
+  \footnote{\hrefu{http://www2.tcs.ifi.lmu.de/~abel/DepTypes.pdf}{www2.tcs.ifi.lmu.de/~abel/DepTypes.pdf}} (lecture notes).
 
 \item Andreas Abel: \emph{Agda Equality}%
-  \footnote{\url{http://www2.tcs.ifi.lmu.de/~abel/Equality.pdf}} (lecture
+  \footnote{\hrefu{http://www2.tcs.ifi.lmu.de/~abel/Equality.pdf}{www2.tcs.ifi.lmu.de/~abel/Equality.pdf}} (lecture
   notes).
 
 
 %\item Jesper Cockx: Dependent Pattern Matching and Proof-Relevant Unification
-%(\url{https://jesper.sikanda.be/files/thesis-final-digital.pdf}, PhD thesis)
+%(\hrefu{https://jesper.sikanda.be/files/thesis-final-digital.pdf}{jesper.sikanda.be/files/thesis-final-digital.pdf}, PhD thesis)
 
 \end{itemize}
 
