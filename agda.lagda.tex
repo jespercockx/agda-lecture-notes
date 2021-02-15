@@ -340,7 +340,8 @@ data Nat : Set where
 \paragraph{Natural number literals.} By default, this definition of natural numbers
 forces us to write out the numbers as $\zero$, $\suc\ \zero$,
 $\suc\ (\suc\ \zero)$, \ldots. However, Agda also has built-in support
-for decimal numbers, which we can activate with the following pragma:
+for decimal numbers, which we can activate by writing the following
+pragma below the definition of $\Nat$:
 \begin{code}
 {-# BUILTIN NATURAL Nat #-}
 \end{code}
@@ -790,9 +791,12 @@ so the output must have type $\Vec\ \Nat\ (\suc\ n)$.
 
 \marginnote[-2cm]{
 \begin{exercise}
-Implement the function $\fun{downFrom} : (n : \Nat) \to \Vec\ \Nat\ n$
-that, given a number $n$, produces the vector
-$(n-1)\ \cons\ (n-2)\ \cons\ \ldots\ \cons\ 0$.
+  Implement the function
+  $\fun{downFrom} : (n : \Nat) \to \Vec\ \Nat\ n$ that, given a number
+  $n$, produces the vector
+  $(n-1)\ \cons\ (n-2)\ \cons\ \ldots\ \cons\ 0$. (You'll need to copy
+  the definition of the $\Vec$ type below to test if your definition
+  typechecks.)
 \end{exercise}
 }
 
@@ -835,16 +839,18 @@ as follows:
 module ThrowAwayVec where
 \end{code}
 \begin{code}[number]
-  data Vec (A : Set) : (n : Nat) → Set where
+  data Vec (A : Set) : Nat → Set where
     []    : Vec A 0
     _::_  : {n : Nat} → A → Vec A n → Vec A (suc n)
   infixr 5 _::_
 \end{code}
 Just like $\List$, $\Vec$ has two constructors $\nil$ and
-$\_\cons\_$. However, the type itself no longer has type $\ty{}$ but
-instead $\Nat \to \ty{}$, indicating that it takes one additional
-argument of type $\Nat$. This is reflected in the types of the
-constructors: $\nil$ constructs a vector of length $0$, while
+$\_\cons\_$. The main difference lies in the \emph{type of the
+datatype}: it is no longer $\ty{}$ but instead $\Nat \to \ty{}$,
+indicating that it takes one additional argument of type $\Nat$. This
+argument is called an \emph{index}, and correspondingly $\Vec$ is
+called an \emph{indexed datatype}. This is reflected in the types of
+the constructors: $\nil$ constructs a vector of length $0$, while
 $\_\cons\_$ takes arguments of type $A$ and $\Vec\ A\ n$ and
 constructs a vector of length $\suc\ n$, where $n$ is an implicit
 argument of the constructor.
@@ -858,13 +864,14 @@ $\nil$ can be a constructor of both $\List$ and $\Vec$.
 \marginnote[-4cm]{%
 \paragraph{Parameters vs.~indices.}
 You might wonder why the argument $(A : \ty{})$ appears \emph{before}
-the colon in the definition of $\Vec$, while the argument $(n : \Nat)$
+the colon in the definition of $\Vec$, while the argument type $\Nat$
 appears after it. The reason for this is that $A$ is a
-\emph{parameter}, while $n$ is an \emph{index} of the datatype. The
-main difference is that parameters must occur uniformly in the return
-types of the constructors --- i.e.~all the constructors must return a
-vector with elements of type $A$ --- while an index can be different for
-each constructor.
+\emph{parameter}, while the argument of type $\Nat$ is an \emph{index}
+of the datatype. The main difference is that a parameter is bound once
+for the whole definition and must occur uniformly in the return types
+of the constructors --- i.e.~the return type of each constructor must
+be of the form $\Vec\ A\ ldots$ --- while each constructor determines
+the value of the index individually.
 }
 
 \begin{code}[hide]
