@@ -901,7 +901,7 @@ head (x :: xs) = x
 Note that this definition does not include a case for the empty vector
 $\nil$. Yet it is still accepted by the coverage checker of Agda! This
 is a good thing: the empty vector $\nil$ does not have type
-$\Vec\ A\ (\suc\ n)$, so any clause of the form $\fun{head}\ [] =
+$\Vec\ A\ (\suc\ n)$, so any clause of the form $\fun{head}\ \con{[]} =
 \ldots$ would be ill-typed! By restricting the type of the input, we
 have avoided the need to define a case for $\nil$, while in Haskell we
 would either end up with an incomplete definition or be forced to use
