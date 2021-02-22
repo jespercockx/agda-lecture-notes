@@ -1807,6 +1807,45 @@ previous lemma and this one to prove commutativity of addition,
 i.e. that $m\ \fun{+}\ n = n\ \fun{+}\ m$ for all natural numbers $m$
 and $n$.
 \end{exercise}
+
+\begin{code}[hide]
+add-n-suc : (m n : Nat) → m + (suc n) ≡ suc (m + n)
+add-n-suc zero    n =
+  begin
+    zero + (suc n)
+  =⟨⟩                            -- applying +
+    suc n
+  end
+add-n-suc (suc m) n =
+  begin
+    (suc m) + (suc n)
+  =⟨⟩                            -- applying +
+    suc (m + (suc n))
+  =⟨ cong suc (add-n-suc m n) ⟩  -- using induction hypothesis
+    suc (suc (m + n))
+  end
+
+add-comm : (m n : Nat) → n + m ≡ m + n
+add-comm zero    n =
+  begin
+    n + zero
+  =⟨ add-n-zero n ⟩              -- applying lemma add-n-zero
+    n
+  =⟨⟩                            -- unapplying add
+    zero + n
+  end
+add-comm (suc m) n =
+  begin
+    n + (suc m)
+  =⟨ add-n-suc n m ⟩             -- applying lemma add-n-suc
+    suc (n + m)
+  =⟨ cong suc (add-comm m n) ⟩   -- using induction hypothesis
+    suc (m + n)
+  =⟨⟩                            -- unapplying add
+    (suc m) + n
+  end
+\end{code}
+
 }
 
 As another example, let us show that addition of natural numbers is
@@ -1853,43 +1892,6 @@ stuck writing a proof, it often helps to work from both directions:
 result, until it becomes clear what step is still required.
 
 
-\begin{code}[hide]
-add-n-suc : (m n : Nat) → m + (suc n) ≡ suc (m + n)
-add-n-suc zero    n =
-  begin
-    zero + (suc n)
-  =⟨⟩                            -- applying +
-    suc n
-  end
-add-n-suc (suc m) n =
-  begin
-    (suc m) + (suc n)
-  =⟨⟩                            -- applying +
-    suc (m + (suc n))
-  =⟨ cong suc (add-n-suc m n) ⟩  -- using induction hypothesis
-    suc (suc (m + n))
-  end
-
-add-comm : (m n : Nat) → n + m ≡ m + n
-add-comm zero    n =
-  begin
-    n + zero
-  =⟨ add-n-zero n ⟩              -- applying lemma add-n-zero
-    n
-  =⟨⟩                            -- unapplying add
-    zero + n
-  end
-add-comm (suc m) n =
-  begin
-    n + (suc m)
-  =⟨ add-n-suc n m ⟩             -- applying lemma add-n-suc
-    suc (n + m)
-  =⟨ cong suc (add-comm m n) ⟩   -- using induction hypothesis
-    suc (m + n)
-  =⟨⟩                            -- unapplying add
-    (suc m) + n
-  end
-\end{code}
 
 \marginnote{
 \begin{exercise}
@@ -2164,6 +2166,27 @@ map-compose f g (x :: xs) =
 Prove that $\fun{length}\ (\fun{map}\ f\ \var{xs})$
 is equal to $\fun{length}\ \var{xs}$ for all $\var{xs}$.
 \end{exercise}
+\begin{code}[hide]
+length-map : {A B : Set} (f : A → B) (xs : List A) → length (map f xs) ≡ length xs
+length-map {A} {B} f [] =
+  begin
+    length (map f [])
+  =⟨⟩
+    length {B} []
+  end
+length-map f (x :: xs) =
+  begin
+    length (map f (x :: xs))
+  =⟨⟩
+    length (f x :: map f xs)
+  =⟨⟩
+    suc (length (map f xs))
+  =⟨ cong suc (length-map f xs) ⟩
+    suc (length xs)
+  =⟨⟩
+    length (x :: xs)
+  end
+\end{code}
 }
 
 \marginnote{
@@ -2178,6 +2201,12 @@ take zero    xs        = []
 take _       []        = []
 take (suc n) (x :: xs) =
   x :: take n xs
+
+test-take-none : {A : Set} {x : A} {xs : List A} → take 0 (x :: xs) ≡ []
+test-take-none = refl
+
+test-take-one : {A : Set} {x : A} {xs : List A} → take 1 (x :: xs) ≡ x :: []
+test-take-one = refl
 \end{code}
 \begin{code}[hide]
 drop : {A : Set}
@@ -2186,6 +2215,12 @@ drop zero    xs        = xs
 drop _       []        = []
 drop (suc n) (x :: xs) =
   drop n xs
+
+test-drop-none : {A : Set} {x : A} {xs : List A} → drop 0 (x :: xs) ≡ (x :: xs)
+test-drop-none = refl
+
+test-drop-one : {A : Set} {x : A} {xs : List A} → drop 1 (x :: xs) ≡ xs
+test-drop-one = refl
 \end{code}
 Prove that for any number $n$ and any list $\var{xs}$, we have
 $\fun{take}\ n\ \var{xs}\ \fun{++}\ \fun{drop}\ n\ \var{xs} =
@@ -2373,9 +2408,43 @@ Complete the proof of $\fun{flatten'-flatten}$.
 \end{exercise}
 }
 \begin{code}[number]
-flatten'-flatten : {A : Set}
-  → (t : Tree A) → flatten' t ≡ flatten t
-flatten'-flatten t = {!!}
+flatten-acc-flatten : {A : Set} (t : Tree A) (xs : List A) → flatten-acc t xs ≡ flatten t ++ xs
+flatten-acc-flatten (leaf x)   xs =
+  begin
+    flatten-acc (leaf x) xs
+  =⟨⟩
+    x :: xs
+  =⟨⟩
+    [ x ] ++ xs
+  =⟨⟩
+    flatten (leaf x) ++ xs
+  end
+flatten-acc-flatten (node l r) xs =
+  begin
+    flatten-acc (node l r) xs
+  =⟨⟩
+    flatten-acc l (flatten-acc r xs)
+  =⟨ flatten-acc-flatten l (flatten-acc r xs) ⟩
+    flatten l ++ (flatten-acc r xs)
+  =⟨ cong (flatten l ++_) (flatten-acc-flatten r xs) ⟩
+    flatten l ++ (flatten r ++ xs)
+  =⟨ sym (append-assoc (flatten l) (flatten r) xs) ⟩
+    (flatten l ++ flatten r) ++ xs
+  =⟨⟩
+    (flatten (node l r)) ++ xs
+  end
+
+flatten'-flatten : {A : Set} → (t : Tree A) → flatten' t ≡ flatten t
+flatten'-flatten t =
+  begin
+    flatten' t
+  =⟨⟩
+    flatten-acc t []
+  =⟨ flatten-acc-flatten t [] ⟩
+    flatten t ++ []
+  =⟨ append-[] (flatten t) ⟩
+    flatten t
+  end
 \end{code}
 \end{AgdaAlign}
 
