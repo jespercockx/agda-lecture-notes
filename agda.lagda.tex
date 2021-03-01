@@ -453,18 +453,19 @@ want to run one of these commands, always remember to first load the
 file using \texttt{Ctrl+c Ctrl+l}.}
 \begin{description}
 \item[Get goal type and context (\texttt{Ctrl+c Ctrl+,})] This command
-  will give you the type of the hole your cursor is currently in, as
+  will give you the type of the hole the cursor is currently in, as
   well as the types of all the variables that are currently in
-  scope. For example, for the hole above we get:
+  scope. For example, for the hole above you get:
 \begin{verbatim}
 Bool
 b : Bool
 \end{verbatim}
 \item[Case (\texttt{Ctrl+c Ctrl+c})] This command will perform a case
-  split on the variable that is currently in the hole, by generating
-  new clauses for each of the possible constructors (if the hole is
-  empty, it will ask for a variable to split on instead). For example,
-  if we enter \texttt{b} in the hole and perform this command, we get:
+  split on a variable. For example, if you put the cursor in the hole
+  in the definition of \fun{not} and press \texttt{Ctrl+c Ctrl+c},
+  Agda will prompt us for a variable to split on. You can then
+  enter the name \var{x} of the variable and press \texttt{enter},
+  giving us the following result:
 \begin{code}[hide]
 module ThrowAway2 where
 \end{code}
@@ -473,13 +474,19 @@ module ThrowAway2 where
   not true   = {!!}
   not false  = {!!}
 \end{code}
-\item[Give (\texttt{Ctrl+c Ctrl+space})] This command will check that
-  the expression that is currently in the hole is well typed and that
-  the type corresponds to the expected type of the hole. If that check
-  succeeds, the hole will be replaced by the expression. For example,
-  if we enter \texttt{false} in the first hole and run this command,
-  we get:%
-\begin{code}[hide]
+  Alternatively, you can first enter the name of a variable in
+  the hole (between the \texttt{\{!} and \texttt{!\}} signs)
+  and then press \texttt{Ctrl+c Ctrl+c} to split on that variable.
+\item[Give (\texttt{Ctrl+c Ctrl+space})] This command allows
+  you to enter an expression into a hole. For example, if you put 
+  our cursor in the first hole in the definition of \fun{not}
+  and press \texttt{Ctrl+c Ctrl+space}, Agda will prompt us
+  for an expression to give. You can then enter \con{false} in
+  the prompt and press \texttt{enter}. Agda will check that the
+  expression is of the right type (in this case \data{Bool}) and
+  then (if typechecking is successful) replace the hole with the given
+  expression. 
+  \begin{code}[hide]
 module ThrowAway3 where
 \end{code}%
 \begin{code}[number]
@@ -494,7 +501,9 @@ not  : Bool → Bool
 not  true   = false
 not  false  = true
 \end{code}
-
+  Alternatively, you can first enter an expression into
+  the hole and then
+  press \texttt{Ctrl+c Ctrl+space} to replace the hole with that expression.
 
 % TODO: refine (C-c C-r)
 
@@ -507,15 +516,19 @@ loaded the file, not just inside a hole:
 \item[Deduce type (\texttt{Ctrl+c Ctrl+d})] This command will ask you
   for an expression, for which it will then try to infer the type. For
   example, running this command and entering \texttt{not true} will
-  return the inferred type \texttt{Bool}.
+  return the inferred type \texttt{Bool}. Alternatively, you
+  can first enter an expression into a hole and then press
+  \texttt{Ctrl+c Ctrl+d} to infer its type.  
 \item[Normalize expression (\texttt{Ctrl+c Ctrl+n})] This command will ask you
   for an expression, which it will evaluate as far as possible. For
   example, running this command and entering \texttt{not (not true)} will
-  return the fully evaluated term \texttt{true}.
+  return the fully evaluated term \texttt{true}. Again, you can
+  alternatively first enter the expression into a hole and then
+  press \texttt{Ctrl+c Ctrl+n} to normalise it.
 \end{description}
 
-You can get a full overview of all available commands by opening the
-command palette in VS Code with \texttt{Ctrl+Shift+P} and typing
+You can get a full overview of all available commands by pressing
+\texttt{Ctrl+Shift+P} to open the command palette in VS Code and then typing
 \texttt{Agda}.
 
 
