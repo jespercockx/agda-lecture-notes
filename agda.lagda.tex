@@ -570,9 +570,11 @@ whether $\ty{}$ itself also has type $\ty{}$, i.e.~whether we have
 $\ty{} : \ty{}$. The answer is no: there are deep reasons why this is
 not allowed in Agda. Concretely, in 1972 the logician Jean-Yves Girard
 discovered a paradox in type theory (which is also at the basis of
-Agda). If Agda would allow $\ty{} : \ty{}$, it would be possible to
-use this paradox to implement an Agda function that is accepted by the
-termination checker but still loops forever. To avoid this paradox and
+Agda). If Agda would allow $\ty{} : \ty{}$, it would break logical
+soundness of Agda, which is important for using Agda as a theorem
+prover (see later). More concretely, with $\ty{} : \ty{}$ it would 
+be possible to circumvent Agda's termination checker and implement
+non-terminating functions. To avoid this paradox and
 the problems it causes, Agda introduces another type $\ty{1}$ such
 that $\ty{} : \ty{1}$, a type $\ty{2}$ such that $\ty{1} : \ty{2}$, et
 cetera.}
@@ -603,7 +605,7 @@ $\fun{if}\ b\ \allowbreak\fun{then}\ \false\ \allowbreak\fun{else}\ \true$.
 Just as we can define polymorphic functions, we can also define
 polymorphic datatypes by adding an argument of type $\ty{}$. For
 example, the type of lists can be defined as follows:%
-\footnote{If we want to be able to write expressions such as
+\footnote[][-1.5cm]{In order to write expressions such as
 $1\ \cons\ 2\ \cons\ 3\ \cons\ \nil$ (as opposed to
 $1\ \cons\ (2\ \cons\ (3\ \cons\ \nil))$), we also need to tell Agda
 that $\cons$ is right associative. We can do so as follows:
