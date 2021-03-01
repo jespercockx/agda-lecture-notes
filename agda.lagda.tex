@@ -1024,11 +1024,38 @@ module LookupVec1 where
 \end{code}
 Notice that the length $n$ of the vector is also used as the upper
 bound for the index: this way we enforce that the index really is in
-range of the vector. Next, we ask Agda to perform a case analysis on
-both the vector and the index. We can do both at once by entering
-\texttt{xs i} into the hole and pressing \texttt{Ctrl+c Ctrl+c}:
+range of the vector. We then split on the vector \var{xs} using \texttt{Ctrl+c Ctrl+c}:
 \begin{code}[hide]
 module LookupVec2 where
+\end{code}
+\begin{code}[number]
+  lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
+  lookupVec []         i = {!!}
+  lookupVec (x :: xs)  i = {!!}
+\end{code}
+So far, so good. Next, we split on the index $i$ in the
+first clause:
+\begin{code}[hide]
+module LookupVec3 where
+\end{code}
+\begin{code}[number]
+  lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
+  lookupVec []         ()
+  lookupVec (x :: xs)  i   = {!!}
+\end{code}
+Something interesting has happened: the index has been replaced by 
+the special syntax $()$ and the equality sign
+has disappeared. This is Agda's way to indicate that there is no
+element of type $\Fin\ \zero$, i.e.~there is no possible index into a
+vector of length $0$. The special pattern $()$ used to indicate this
+is called an \emph{absurd pattern}, and the clause is called an
+\emph{absurd clause}.
+
+
+Having completed the case for the empty vector $\nil$, we can
+also split on the index $i$ in the second clause:
+\begin{code}[hide]
+module LookupVec4 where
 \end{code}
 \begin{code}[number]
   lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
@@ -1036,14 +1063,8 @@ module LookupVec2 where
   lookupVec (x :: xs)  zero     = {!!}
   lookupVec (x :: xs)  (suc i)  = {!!}
 \end{code}
-Something interesting has happened: in the first case where the vector
-is $\nil$, the index has been replaced by $()$ and the equality sign
-has disappeared. This is Agda's way to indicate that there is no
-element of type $\Fin\ \zero$, i.e.~there is no possible index into a
-vector of length $0$. The special pattern $()$ used to indicate this
-is called an \emph{absurd pattern}, and the clause is called an
-\emph{absurd clause}.
-
+Since the length of the vector $x\ \cons\ \var{xs}$ is $\suc\ n$,
+we get cases for both constructors of $\Fin$.
 Finally, we can complete the definition of $\fun{lookupVec}$ by
 filling in the remaining two holes the same way as we would have done
 for the unsafe lookup function in Haskell.
