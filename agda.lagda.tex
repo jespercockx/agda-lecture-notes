@@ -385,10 +385,10 @@ Just like in Haskell, a definition by pattern matching consists of a list of
 \emph{clauses} or equalities. Also like in Haskell, functions can make
 \emph{recursive calls} to themselves on the right-hand side of a clause.
 
-To test our definition, we can first \emph{load} the file in VS Code by
-pressing \texttt{Ctrl+c} followed by \texttt{Ctrl+l} (for ``load file'') and
-then asking Agda to evaluate an expression by pressing \texttt{Ctrl+c} followed
-by \texttt{Ctrl+n} (for ``normalize expression''). A prompt will appear where
+To test our definition, we first load the file in VS Code 
+(\texttt{Ctrl+c Ctrl+l}) and then ask Agda to evaluate an expression
+ by pressing \texttt{Ctrl+c Ctrl+n} (for ``normalize expression'').
+ A prompt will appear where
 you can enter the term to be evaluated. For example, if you enter \texttt{(suc
 zero) + (suc zero)} you should get back the response \texttt{suc (suc zero)}.
 
@@ -441,8 +441,7 @@ module ThrowAway1 where
   not b = {!!}
 \end{code}
 Agda can load a file even if it still contains holes. If you load the
-file (using the key combination \texttt{Ctrl+c} followed by
-\texttt{Ctrl+l}), Agda will assign a number to the holes and give you
+file (with \texttt{Ctrl+c Ctrl+l}), Agda will assign a number to the holes and give you
 some information about each one:
 \begin{verbatim}
 ?0 : Bool
