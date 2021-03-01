@@ -727,13 +727,19 @@ Problematic calls:
 
 \marginnote{%
 \paragraph{Limitations of coverage and termination checking.}
-While the coverage checking and termination checking algorithms of
-Agda are quite sophisticated, they are far from perfect. So it could
+In general, coverage checking and termination checking are undecidable
+problems, so it is impossible to detect all complete
+and terminating functions without allowing some false negatives.
+Agda instead errs on the side of caution and allows only a subset of
+all complete and terminating functions. So it could
 happen that you write down a complicated function that is complete and
 terminating, yet Agda still throws an error. If that happens, you will
-have to write the function in a simpler way to make it obvious to Agda
-that the function is really total. While it is hard to give a general
-rule, it usually pays off to split complex functions into simpler
+have to write the function in a different way to make it obvious to Agda
+that the function is really total. A good rule of thumb is to include
+use \texttt{Ctrl+c Ctrl+c} to make sure you have cases for all constructors,
+and to only make recursive calls on arguments that are \emph{structurally decreasing},
+i.e.~that are a subterm of the pattern on the left-hand side of the clause.
+When in doubt, it can also pay off to split complex functions into simpler
 helper functions that are easier for Agda to analyze.
 }
 
