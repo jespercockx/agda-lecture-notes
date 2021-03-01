@@ -957,44 +957,61 @@ type of the function enforces the two vectors to have the same length!
 
 One important operation on lists is looking up the element at a given
 position. In Haskell, this is implemented by the function
-\texttt{(!)~:~[a] -> Int -> a}. However, this is a partial function:
+\texttt{(!!)~::~[a] -> Int -> a}. However, this is a partial function:
 if the index is too big (or negative) the function will throw an
-error. Since throwing errors is not allowed in Agda, we were forced to
+error. Since throwing errors is not allowed in Agda, we are forced to
 give it the type $\{A : \ty{}\} \to \List\ A \to \Nat \to
 \data{Maybe}\ A$, and return $\con{nothing}$ in case the index is too
 big. However, we can do better by using $\Vec$ instead of $\List$ and
 requiring the index to be in range of the vector. To make this work,
 we introduce a new type $\Fin\ n$ of \emph{finite sets}. This type
 consists of all natural numbers less than $n$, i.e.~the numbers
-$0,1,2,\ldots,(n-1)$.  The type $\Fin$ is defined as follows:
-\begin{code}[number]
-data Fin : Nat → Set where
-  zero  : {n : Nat} → Fin (suc n)
-  suc   : {n : Nat} → Fin n → Fin (suc n)
-\end{code}
+$0,1,2,\ldots,(n-1)$.
+
 As an example, the type $\Fin\ 3$ contains three elements:
-\begin{code}[number]
-zero3 : Fin 3
-zero3 = zero
-
-one3 : Fin 3
-one3   = suc zero
-
-two3 : Fin 3
-two3   = suc (suc zero)
+\begin{code}[hide]
+module ThrowAwayFin where
+  data Fin : Nat → Set where
+    zero  : {n : Nat} → Fin (suc n)
+    suc   : {n : Nat} → Fin n → Fin (suc n)
 \end{code}
-However, if we try to define $\fun{three3} : \Fin 3$ as
+\begin{code}[number]
+  zero3 : Fin 3
+  zero3 = zero
+
+  one3 : Fin 3
+  one3   = suc zero
+
+  two3 : Fin 3
+  two3   = suc (suc zero)
+\end{code}
+However, if we try to define $\fun{three3} : \Fin\ 3$ as
 $\suc\ (\suc\ (\suc\ \zero))$, we get an error:
 \begin{verbatim}
 (suc _n_112) != zero of type Nat
 when checking that the expression zero has type Fin 0
 \end{verbatim}
-From this error, we can see that Agda expected the $\zero$ to have
-type $\Fin\ 0$, but $\zero$ in fact returns something of type
-$\Fin\ (\suc\ n)$ for some value of $n$. In fact, we can see that
-there is \emph{no} way to construct an element of type $\Fin\ 0$: it
+Without immediately going into the full details of this error message,
+we can already infer that Agda does not allow us to
+define $\suc\ (\suc\ (\suc\ \zero))$ as an element of $\Fin\ 3$.
+
+The type $\Fin$ is defined as follows:
+\begin{code}[number]
+data Fin : Nat → Set where
+  zero  : {n : Nat} → Fin (suc n)
+  suc   : {n : Nat} → Fin n → Fin (suc n)
+\end{code}
+From this definition, we can see that \con{zero} constructs
+an element of type $\data{Fin}\ (\suc\ n)$ for any $n$,
+while $\suc$ constructs a new element of type $\data{Fin}\ 
+(\suc\ n)$ for each element of type $\data{Fin}\ n$.
+In particular, there is no way
+to construct an element of type $\data{Fin}\ 0$: it
 is an \emph{empty type}. Empty types will take an important role once
 we start using Agda as a proof assistant in the next section.
+At the next step, there is only one way to construct an element
+of type $\Fin\ 1$ which is the constructor \zero, since
+using \suc{} would require us to give an element of type $\Fin\ 0$.
 
 For now, let us define a safe variant of the $\fun{lookup}$ function
 using $\Vec$ and $\Fin$. Here is the type signature:
