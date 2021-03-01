@@ -798,6 +798,13 @@ module TempVec where
   myVec3 : Vec Nat 0
   myVec3 = []
 \end{code}
+
+\marginnote{%
+\paragraph{Overloading of constructors.} Agda allows us to use
+the same name for the constructors of different datatypes, for example
+$\nil$ can be a constructor of both $\List$ and $\Vec$.
+}
+%
 In fact, the length $n$ does not have to be a literal number, but it
 can be any expression of type $\Nat$. So we might as well have written
 $\data{Vec}\ \Nat\ (2\ +\ 3)$ instead of $\data{Vec}\ \Nat\ 5$.
@@ -874,24 +881,8 @@ module ThrowAwayVec where
     _::_  : {n : Nat} → A → Vec A n → Vec A (suc n)
   infixr 5 _::_
 \end{code}
-Just like $\List$, $\Vec$ has two constructors $\nil$ and
-$\_\cons\_$. The main difference lies in the \emph{type of the
-datatype}: it is no longer $\ty{}$ but instead $\Nat \to \ty{}$,
-indicating that it takes one additional argument of type $\Nat$. This
-argument is called an \emph{index}, and correspondingly $\Vec$ is
-called an \emph{indexed datatype}. This is reflected in the types of
-the constructors: $\nil$ constructs a vector of length $0$, while
-$\_\cons\_$ takes arguments of type $A$ and $\Vec\ A\ n$ and
-constructs a vector of length $\suc\ n$, where $n$ is an implicit
-argument of the constructor.
-
+%
 \marginnote[-6cm]{%
-\paragraph{Overloading of constructors.} Agda allows us to use
-the same name for the constructors of different datatypes, for example
-$\nil$ can be a constructor of both $\List$ and $\Vec$.
-}
-
-\marginnote[-4cm]{%
 \paragraph{Parameters vs.~indices.}
 You might wonder why the argument $(A : \ty{})$ appears \emph{before}
 the colon in the definition of $\Vec$, while the argument type $\Nat$
@@ -903,6 +894,17 @@ of the constructors --- i.e.~the return type of each constructor must
 be of the form $\Vec\ A\ \ldots$ --- while each constructor determines
 the value of the index individually.
 }
+%
+Just like $\List$, $\Vec$ has two constructors $\nil$ and
+$\_\cons\_$. The main difference lies in the \emph{type of the
+datatype}: it is no longer $\ty{}$ but instead $\Nat \to \ty{}$,
+indicating that it takes one additional argument of type $\Nat$. This
+argument is called an \emph{index}, and correspondingly $\Vec$ is
+called an \emph{indexed datatype}. This is reflected in the types of
+the constructors: $\nil$ constructs a vector of length $0$, while
+$\_\cons\_$ takes arguments of type $A$ and $\Vec\ A\ n$ and
+constructs a vector of length $\suc\ n$, where $n$ is an implicit
+argument of the constructor.
 
 \begin{code}[hide]
 open TempVec public
@@ -1269,7 +1271,7 @@ absurd ()
 \end{code}
 (Remember that the absurd pattern $()$ indicates to Agda that there
 are no valid constructors.)
-\marginnote[-5cm]{%
+\marginnote[-4cm]{%
 \paragraph{On empty types.} Note that it is not possible to
 define a real empty type in Haskell: even if we define a type with no
 constructors, it is still inhabited by \texttt{undefined}, as well as
@@ -1354,7 +1356,7 @@ proof3 f = (λ x → f (left x)) , (λ y → f (right y))
 
 \end{itemize}
 
-\marginnote[-8cm]{
+\marginnote[-3cm]{
 \begin{exercise}
 Translate the following propositions to Agda types
 using the Curry-Howard correspondence, and prove them by implementing
