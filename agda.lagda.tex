@@ -159,7 +159,7 @@ correspondence}.
 While strongly typed languages such as Java or Haskell have type
 systems that are quite expressive, due to various reasons it is hard
 to fully appreciate the three above points from their
-perspective. Instead, we will study Agda, a functional language that
+perspective. In these lecture notes, we will study Agda, a functional language that
 is similar to Haskell but is a bit more experimental and has an even
 more expressive type system with full support for dependent types.
 
@@ -205,6 +205,15 @@ as Agda).
 \end{itemize}
 
 
+The goal of these lecture notes is \emph{not} to provide a full guide to using
+Agda as a full-featured programming language. Instead, we use Agda as a vehicle
+to study the basic building blocks that make up a dependently typed functional
+programming language. Most of the types and functions we define --- as well as
+much more --- can be found in Agda's standard library, which you can get from
+\hrefu{https://github.com/agda/agda-stdlib}{github.com/agda/agda-stdlib}. In
+these notes, we will not make use of the standard library and instead define
+everything from the ground up. When using Agda for real, it is of course
+much easier to get these definitions from the library instead!
 
 
 \subsection{Installing Agda}
@@ -260,6 +269,25 @@ world'' example for creating an executable from your Agda code can be
 found at
 \hrefu{https://agda.readthedocs.io/en/v2.6.1.2/getting-started/hello-world.html}{agda.readthedocs.io/en/v2.6.1.2/getting-started/hello-world.html}.}
 
+Once you have loaded an Agda file, there is a number of other commands that
+can be used to query the typechecker. Here are two that are used very often:
+
+\begin{description}
+\item[Deduce type (\texttt{Ctrl+c Ctrl+d})] This command will ask you
+  for an expression, for which it will then try to infer the type. For
+  example, running this command and entering \texttt{hello} will
+  return the inferred type \texttt{Greeting}.
+\item[Normalize expression (\texttt{Ctrl+c Ctrl+n})] This command will ask you
+  for an expression, which it will evaluate as far as possible. For
+  example, running this command and entering \texttt{greet} will
+  return the fully evaluated term \texttt{hello}. 
+\end{description}
+
+It can be difficult to figure out the types and normal forms, especially when
+you are just starting to learn Agda. When you are unsure of the type or normal
+form of an expression, first try to predict what it is and then use the
+commands above to test your prediction.
+
 \subsection{Syntactic differences with Haskell}
 
 As we noted before, the syntax of Agda is in many respects similar to
@@ -282,7 +310,8 @@ Agda mode for VS Code. For example, when you type
 \texttt{\textbackslash{}to} it will be replaced by $\to$, and
 \texttt{\textbackslash{}lambda} is replaced by $\lambda$.}
 
-\item[Naming] Agda does not impose any restrictions on what names have
+\item[Naming] In Agda there is no syntactic difference between an expression
+and a type. As a consequence, there are no restrictions on what names have
 to start with a small letter or a capital letter. In addition, almost
 all ascii and unicode characters\footnote{The exceptions are the
 symbols \texttt{.;\{\}()\@"}.} can be used as part of a name. As a
@@ -373,11 +402,6 @@ must have a type - including types themselves - and $\ty{}$ is the type of
 
 Next, we define addition $\fun{\_+\_}$ on natural numbers by pattern
 matching as follows:
-\marginnote{\paragraph{The Agda standard library.} You can find the definitions in this section --- as
-well as much more --- in Agda's standard library, which you can get from
-\hrefu{https://github.com/agda/agda-stdlib}{github.com/agda/agda-stdlib}. In these notes, we will
-not make use of the standard library and instead define everything
-from scratch.}
 
 \begin{code}[number]
 _+_ : Nat → Nat → Nat
@@ -512,23 +536,7 @@ not  false  = true
 
 \end{description}
 
-There are also a few commands that can be used anywhere after you
-loaded the file, not just inside a hole:
 
-\begin{description}
-\item[Deduce type (\texttt{Ctrl+c Ctrl+d})] This command will ask you
-  for an expression, for which it will then try to infer the type. For
-  example, running this command and entering \texttt{not true} will
-  return the inferred type \texttt{Bool}. Alternatively, you
-  can first enter an expression into a hole and then press
-  \texttt{Ctrl+c Ctrl+d} to infer its type.  
-\item[Normalize expression (\texttt{Ctrl+c Ctrl+n})] This command will ask you
-  for an expression, which it will evaluate as far as possible. For
-  example, running this command and entering \texttt{not (not true)} will
-  return the fully evaluated term \texttt{true}. Again, you can
-  alternatively first enter the expression into a hole and then
-  press \texttt{Ctrl+c Ctrl+n} to normalise it.
-\end{description}
 
 You can get a full overview of all available commands by pressing
 \texttt{Ctrl+Shift+P} to open the command palette in VS Code and then typing
@@ -550,7 +558,6 @@ This works just like the declaration \texttt{type MyNat = Nat} in
 Haskell: the type checker will treat the two types $\data{Nat}$ and
 $\fun{MyNat}$ as identical for all intents and purposes.
 
-
 The type $\ty{}$ is also used to implement polymorphic functions and
 datatypes in Agda. For example, we can define the polymorphic identity
 function $\fun{id}$ as follows:
@@ -567,7 +574,7 @@ has type $\Bool$ and evaluates to $\true$, while
 $\fun{id}\ \Nat\ \zero$ has type $\Nat$ and evaluates to $\zero$.
 
 
-\marginnote{\paragraph{The type of $\ty{}$.} Since all the types we have seen so far have type
+\marginnote[-4cm]{\paragraph{The type of $\ty{}$.} Since all the types we have seen so far have type
 $\ty{}$, and $\ty{}$ itself is also a type, you might be wondering
 whether $\ty{}$ itself also has type $\ty{}$, i.e.~whether we have
 $\ty{} : \ty{}$. The answer is no: there are deep reasons why this is
@@ -885,7 +892,7 @@ module ThrowAwayVec where
   infixr 5 _::_
 \end{code}
 %
-\marginnote[-6cm]{%
+\marginnote[-4cm]{%
 \paragraph{Parameters vs.~indices.}
 You might wonder why the argument $(A : \ty{})$ appears \emph{before}
 the colon in the definition of $\Vec$, while the argument type $\Nat$
@@ -1159,10 +1166,12 @@ data Σ (A : Set) (B : A → Set) : Set where
   _,_ : (x : A) → B x → Σ A B
 \end{code}
 Note that the second parameter of $\sigmatype$ is not just a type in
-$\ty{}$ but a \emph{function} in $A → \ty{}$, i.e.~a dependent type.
+$\ty{}$ but a \emph{function} of type $A → \ty{}$, i.e.~a dependent type.
 
 We can see that $\sigmatype$ is indeed a generalization of the normal
-pair type where the type of the second component ignores its input:
+pair type where the type of the second component ignores its input:%
+\footnote{This definition defines $A\ \data{×'}\ B$ to be a \emph{type alias}
+for $\sigmatype~A~(λ\_ → B)$.}
 \begin{code}[number]
 _×'_ : (A B : Set) → Set
 A ×' B = Σ A (λ _ → B)
