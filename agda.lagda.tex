@@ -15,6 +15,9 @@
 \usepackage{booktabs}
 \usepackage{amsthm}
 
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
 \newcommand{\hrefu}[2]{\href{#1}{\nolinkurl{#2}}}
 
 \theoremstyle{definition}
@@ -997,23 +1000,69 @@ Without immediately going into the full details of this error message,
 we can already infer that Agda does not allow us to
 define $\suc\ (\suc\ (\suc\ \zero))$ as an element of $\Fin\ 3$.
 
+The type $\Fin\ 0$ in particular 
+contains \emph{zero} arguments: it is an \emph{empty type}.
+This makes sense as we want to use $\Fin\ n$ as an index
+into a vector of length $n$, and there are no valid indices
+into a vector of length $0$. Empty types will take an important role once
+we start using Agda as a proof assistant in the next section.
+
 The type $\Fin$ is defined as follows:
 \begin{code}[number]
 data Fin : Nat → Set where
   zero  : {n : Nat} → Fin (suc n)
   suc   : {n : Nat} → Fin n → Fin (suc n)
 \end{code}
-From this definition, we can see that \con{zero} constructs
-an element of type $\data{Fin}\ (\suc\ n)$ for any $n$,
+The constructor \con{zero} constructs
+an element of type $\data{Fin}~(\suc\ n)$ for any $n$,
 while $\suc$ constructs a new element of type $\data{Fin}\ 
 (\suc\ n)$ for each element of type $\data{Fin}\ n$.
 In particular, there is no way
-to construct an element of type $\data{Fin}\ 0$: it
-is an \emph{empty type}. Empty types will take an important role once
-we start using Agda as a proof assistant in the next section.
-At the next step, there is only one way to construct an element
-of type $\Fin\ 1$ which is the constructor \zero, since
+to construct an element of type $\data{Fin}\ 0$. 
+For type $\Fin\ 1$ the only possible constructor is \zero, since
 using \suc{} would require us to give an element of type $\Fin\ 0$.
+
+\begin{figure}
+\begin{tikzpicture}[node distance=0.2cm and 0.8cm, auto]
+  \node (fz) {$\Fin\ 0$};
+  \node (fsz) [right=of fz] {$\Fin\ 1$};
+  \node (fssz) [right=of fsz] {$\Fin\ 2$};
+  \node (fsssz) [right=of fssz] {$\Fin\ 3$};
+  \node (fssssz) [right=of fsssz] {$\Fin\ 4$};
+  \node (fsssssz) [right=of fssssz] {$\cdots$};
+  \node (z1) [above=of fsz] {$\zero$};
+  \node (z2) [above=of fssz] {$\zero$};
+  \node (z3) [above=of fsssz] {$\zero$};
+  \node (z4) [above=of fssssz] {$\zero$};
+  \node (z5) [above=of fsssssz] {$\cdots$};
+  \node (sz2) [above=of z2] {$\suc$};
+  \node (sz3) [above=of z3] {$\suc$};
+  \node (sz4) [above=of z4] {$\suc$};
+  \node (sz5) [above=of z5] {$\cdots$};
+  \node (ssz3) [above=of sz3] {$\suc$};
+  \node (ssz4) [above=of sz4] {$\suc$};
+  \node (ssz5) [above=of sz5] {$\cdots$};
+  \node (sssz4) [above=of ssz4] {$\suc$};
+  \node (sssz5) [above=of ssz5] {$\cdots$};
+  \draw[->] (sz2) to (z1); 
+  \draw[->] (sz3) to (z2); 
+  \draw[->] (sz4) to (z3); 
+  \draw[->] (ssz3) to (sz2);
+  \draw[->] (ssz4) to (sz3);
+  \draw[->] (sssz4) to (ssz3); 
+\end{tikzpicture}
+\caption{We can visualize the family of $\Fin$ types as an (infinite) triangle,
+where each type other than $\Fin\ 0$ has an element $\zero$, and each type also
+has all elements of the form $\suc\ x$ where $x$ belongs to the \emph{previous}
+type in the family.}
+\end{figure}
+
+
+%  \draw[-] (w) to node[above]{$t$} (x);
+%  \draw[-] (y) to node[below]{$b$} (z);
+%  \draw[-] (w) to node[left]{$l$} (y);
+%  \draw[-] (x) to node[right]{$r$} (z);
+%  \draw[-,double distance=3] (t) to node[right]{$q$} (b);
 
 For now, let us define a safe variant of the $\fun{lookup}$ function
 using $\Vec$ and $\Fin$. Here is the type signature:
