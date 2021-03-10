@@ -2531,11 +2531,6 @@ flatten' t = flatten-acc t []
 \end{AgdaAlign}
 Now we can prove that these two implementations are functionally equivalent,
 following the example of the $\fun{reverse}$ function above:
-\marginnote{
-\begin{exercise}
-Complete the proof of $\fun{flatten'-flatten}$.
-\end{exercise}
-}
 \begin{fullwidth}\begin{AgdaAlign}
 \begin{code}[number]
 flatten-acc-flatten : {A : Set} (t : Tree A) (xs : List A) → flatten-acc t xs ≡ flatten t ++ xs
@@ -2565,7 +2560,17 @@ flatten-acc-flatten (node l r) xs =
   end
 
 flatten'-flatten : {A : Set} → (t : Tree A) → flatten' t ≡ flatten t
-flatten'-flatten t =
+flatten'-flatten t = {!!}
+\end{code}
+\end{AgdaAlign}\end{fullwidth}
+\marginnote{
+\begin{exercise}
+Complete the proof of $\fun{flatten'-flatten}$ by making use of the \fun{flatten-acc-flatten} lemma above and the \fun{append-[]} lemma we used earlier.
+\end{exercise}
+}
+\begin{code}[hide]
+flatten'-flatten-solution : {A : Set} → (t : Tree A) → flatten' t ≡ flatten t
+flatten'-flatten-solution t =
   begin
     flatten' t
   =⟨⟩                                                   -- applying flatten'
@@ -2576,8 +2581,6 @@ flatten'-flatten t =
     flatten t
   end
 \end{code}
-\end{AgdaAlign}
-
 
 \subsection{Compiler correctness}
 
