@@ -2646,19 +2646,19 @@ compile e = compile' e []
 
 \end{code}
 
-\begin{code}[number]
-exec-distributivity : (c d : Code) (s : Stack)
-                    → exec (c ++ d) s ≡ exec d (exec c s)
-exec-distributivity []              d  s  = {!!}
-exec-distributivity (PUSH x  :: c)  d  s  = {!!}
-exec-distributivity (ADD     :: c)  d  s  = {!!}
-
-\end{code}
-
-\marginnote{
-\begin{exercise}
-Complete the proof of $\fun{exec-distributivity}$.
-\end{exercise}}
+%\begin{code}[number]
+%exec-distributivity : (c d : Code) (s : Stack)
+%                    → exec (c ++ d) s ≡ exec d (exec c s)
+%exec-distributivity []              d  s  = {!!}
+%exec-distributivity (PUSH x  :: c)  d  s  = {!!}
+%exec-distributivity (ADD     :: c)  d  s  = {!!}
+%
+%\end{code}
+%
+%\marginnote{
+%\begin{exercise}
+%Complete the proof of $\fun{exec-distributivity}$.
+%\end{exercise}}
 
 \begin{code}[number]
 compile'-exec-eval : (e : Expr) (s : Stack) (c : Code)
