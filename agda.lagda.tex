@@ -2462,11 +2462,11 @@ possible generalizations!  }
     reverse-acc-lemma [] ys =
       begin
         reverse-acc [] ys
-      =⟨⟩
+      =⟨⟩                     -- definition of reverse-acc
         ys
-      =⟨⟩
+      =⟨⟩                     -- unapplying ++
         [] ++ ys
-      =⟨⟩
+      =⟨⟩                     -- unapplying reverse
         reverse [] ++ ys
       end
 \end{code}
@@ -2528,6 +2528,7 @@ flatten' : {A : Set} → Tree A → List A
 flatten' t = flatten-acc t []
 \end{code}
 \end{AgdaSuppressSpace}
+\end{AgdaAlign}
 Now we can prove that these two implementations are functionally equivalent,
 following the example of the $\fun{reverse}$ function above:
 \marginnote{
@@ -2535,30 +2536,31 @@ following the example of the $\fun{reverse}$ function above:
 Complete the proof of $\fun{flatten'-flatten}$.
 \end{exercise}
 }
+\begin{fullwidth}\begin{AgdaAlign}
 \begin{code}[number]
 flatten-acc-flatten : {A : Set} (t : Tree A) (xs : List A) → flatten-acc t xs ≡ flatten t ++ xs
 flatten-acc-flatten (leaf x)   xs =
   begin
     flatten-acc (leaf x) xs
-  =⟨⟩
+  =⟨⟩                                                   -- definition of flatten-acc
     x :: xs
-  =⟨⟩
+  =⟨⟩                                                   -- unapplying ++
     [ x ] ++ xs
-  =⟨⟩
+  =⟨⟩                                                   -- unapplying flatten
     flatten (leaf x) ++ xs
   end
 flatten-acc-flatten (node l r) xs =
   begin
     flatten-acc (node l r) xs
-  =⟨⟩
+  =⟨⟩                                                   -- applying flatten-acc
     flatten-acc l (flatten-acc r xs)
-  =⟨ flatten-acc-flatten l (flatten-acc r xs) ⟩
+  =⟨ flatten-acc-flatten l (flatten-acc r xs) ⟩         -- using IH for l
     flatten l ++ (flatten-acc r xs)
-  =⟨ cong (flatten l ++_) (flatten-acc-flatten r xs) ⟩
+  =⟨ cong (flatten l ++_) (flatten-acc-flatten r xs) ⟩  -- using IH for r
     flatten l ++ (flatten r ++ xs)
-  =⟨ sym (append-assoc (flatten l) (flatten r) xs) ⟩
+  =⟨ sym (append-assoc (flatten l) (flatten r) xs) ⟩    -- using append-assoc
     (flatten l ++ flatten r) ++ xs
-  =⟨⟩
+  =⟨⟩                                                   -- unapplying flatten
     (flatten (node l r)) ++ xs
   end
 
@@ -2566,11 +2568,11 @@ flatten'-flatten : {A : Set} → (t : Tree A) → flatten' t ≡ flatten t
 flatten'-flatten t =
   begin
     flatten' t
-  =⟨⟩
+  =⟨⟩                                                   -- applying flatten'
     flatten-acc t []
-  =⟨ flatten-acc-flatten t [] ⟩
+  =⟨ flatten-acc-flatten t [] ⟩                         -- using flatten-acc-flatten lemma
     flatten t ++ []
-  =⟨ append-[] (flatten t) ⟩
+  =⟨ append-[] (flatten t) ⟩                            -- using append-[] lemma
     flatten t
   end
 \end{code}
@@ -2587,6 +2589,7 @@ a full explanation.
 
 \begin{AgdaAlign}
 \begin{AgdaSuppressSpace}
+\begin{fullwidth}
 \begin{code}[number]
 data Expr : Set where
   valE  : Nat → Expr
@@ -2660,11 +2663,11 @@ compile'-exec-eval : (e : Expr) (s : Stack) (c : Code)
 compile'-exec-eval (valE x) s c =
   begin
     exec (compile' (valE x) c) s
-  =⟨⟩
+  =⟨⟩                                                    -- applying compile'
     exec (PUSH x :: c) s
-  =⟨⟩
+  =⟨⟩                                                    -- applying exec for PUSH
     exec c (x :: s)
-  =⟨⟩
+  =⟨⟩                                                    -- unapplying eval for valE
     exec c (eval (valE x) :: s)
   end
 \end{code}
@@ -2673,15 +2676,15 @@ compile'-exec-eval (valE x) s c =
 compile'-exec-eval (addE e1 e2) s c =
   begin
     exec (compile' (addE e1 e2) c) s
-  =⟨⟩
+  =⟨⟩                                                    -- applying compile'
     exec (compile' e1 (compile' e2 (ADD :: c))) s
-  =⟨ compile'-exec-eval e1 s (compile' e2 (ADD :: c)) ⟩
+  =⟨ compile'-exec-eval e1 s (compile' e2 (ADD :: c)) ⟩  -- using IH for e1
     exec (compile' e2 (ADD :: c)) (eval e1 :: s)
-  =⟨ compile'-exec-eval e2 (eval e1 :: s) (ADD :: c) ⟩
+  =⟨ compile'-exec-eval e2 (eval e1 :: s) (ADD :: c) ⟩   -- using IH for e2
     exec (ADD :: c) (eval e2 :: eval e1 :: s)
-  =⟨⟩
+  =⟨⟩                                                    -- applying exec for ADD
     exec c (eval e1 + eval e2 :: s)
-  =⟨⟩
+  =⟨⟩                                                    -- unapplying eval for addE
     exec c (eval (addE e1 e2) :: s)
   end
 
@@ -2691,15 +2694,16 @@ compile'-exec-eval (addE e1 e2) s c =
 compile-exec-eval : (e : Expr) → exec (compile e) [] ≡ [ eval e ]
 compile-exec-eval e =
   begin
-    exec (compile e) []
-  =⟨ compile'-exec-eval e [] [] ⟩
+    exec (compile e) [] 
+  =⟨ compile'-exec-eval e [] [] ⟩                        -- using compile'-exec-eval lemma
     exec [] (eval e :: [])
-  =⟨⟩
+  =⟨⟩                                                    -- applying exec for []
     eval e :: []
-  =⟨⟩
+  =⟨⟩                                                    -- unapplying [_]
     [ eval e ]
   end
 \end{code}
+\end{fullwidth}
 \end{AgdaSuppressSpace}
 \end{AgdaAlign}
 
