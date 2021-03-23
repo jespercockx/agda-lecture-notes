@@ -383,6 +383,8 @@ pragma below the definition of $\Nat$:
 Once we have activated this pragma, Agda will interpret the numbers
 $\lit{0}$, $\lit{1}$, $\lit{2}$, \ldots using the constructors $\zero$ and $\suc$.
 }
+The datatype definition consists of a \emph{data signature} $\data{Nat} : \ty{}$ and
+two \emph{constructor signatures} $\zero : \Nat$ and $\suc : \Nat \to \Nat$.
 We can immediately spot a few differences with the corresponding Haskell
 definition \texttt{data Nat = Zero | Suc Nat}:
 
@@ -409,7 +411,7 @@ _+_ : Nat → Nat → Nat
 zero     + y  = y
 (suc x)  + y  = suc (x + y)
 \end{code}
-Just like in Haskell, a definition by pattern matching consists of a list of
+Just like in Haskell, a definition by pattern matching consists of a \emph{type signature} followed by a list of
 \emph{clauses} or equalities. Also like in Haskell, functions can make
 \emph{recursive calls} to themselves on the right-hand side of a clause.
 
