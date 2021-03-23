@@ -779,6 +779,33 @@ types. It is also crucial for using Agda as a proof assistant, to rule
 out circular proofs. We will discuss both of these topics in more
 detail in the following sections.
 
+\subsection{Section summary}
+
+\begin{itemize}
+  \item Agda is a purely functional programming language much like
+Haskell.
+  \item When defining a datatype in Agda, we need to give the full
+type of each constructor (instead of just the types of the arguments
+as in Haskell).
+  \item We can query the Agda typechecker using the commands
+\texttt{Ctrl+c Ctrl+l} (load file), \texttt{Ctrl+c Ctrl+d} (deduce
+type), and \texttt{Ctrl+c Ctrl+n} (normalise expression).
+  \item A hole is a part of an Agda program that is not yet complete,
+and is entered using \texttt{?} or \texttt{\{!!\}}. We can
+interactively develop a program with holes using the commands
+\texttt{Ctrl+c Ctrl-,} (information about hole), \texttt{Ctrl+c
+Ctrl+c} (case split), and \texttt{Ctrl+c Ctrl+space} (give solution).
+  \item Types in Agda are themselves values of type $\ty{}$. We can
+define polymorphic functions in Agda by adding an argument of type
+$\ty{}$.
+  \item Implicit arguments are declared using curly braces $\{\}$ and
+can be omitted from both definition and usage of the function.
+  \item Agda is a total language, which means that Agda functions will
+never crash or fail to terminate. To ensure totality, Agda uses a
+coverage checker to check completeness of functions by pattern
+matching and a termination checker to check termination of recursive
+functions.
+\end{itemize}
 
 
 
@@ -1215,6 +1242,32 @@ Implement functions converting back and forth
 between $\List\ A$ and $\data{List'}\ A$.
 \end{exercise}
 }
+
+\subsection{Section summary}
+
+\begin{itemize}
+  \item A dependent type is a family of types that is indexed over
+values of a base type. For example, $\Vec\ A\ n$ is a dependent type
+indexed over natural numbers $n : \Nat$.
+  \item A dependent function is a function where the type of the
+output depends on the value of the input. For example, $\fun{zeroes} :
+(n : \Nat) \to \data{Vec}\ \Nat\ n$ is a dependent function.
+  \item We can define new dependent types as \emph{indexed datatypes},
+which are datatypes of type $I \to \ty{}$. Each constructor of an
+indexed datatype must determine what index it targets. For example,
+the constructor $\nil$ targets the type $\data{Vec}\ A\ \lit{0}$ with
+index $\lit{0}$.
+  \item When pattern matching on an indexed datatype, it is allowed to
+omit constructors that can be determined to be impossible based on
+their type. For example, the function $\fun{head}$ takes an argument
+of type $\data{Vec}\ A\ (\suc\ n)$ so it does not require a case for
+the empty vector $\nil$.
+  \item When a type has no possible constructors, we can match on it
+by using an \emph{absurd pattern} $()$ and omitting the right-hand
+side of the clause.
+  \item The dependent pair type $\sigmatype\ A\ B$ consists of pairs
+$(x,y)$ where $x : A$ and $y : B\ x$.
+\end{itemize}
 
 \section{The Curry-Howard correspondence}
 
@@ -1790,6 +1843,31 @@ In all other cases where $a$ and $b$ cannot easily be unified but they
 are not obviously distinct either, Agda will throw an error message
 saying it doesn't know whether there should be a case for the
 constructor $\refl$.
+
+\subsection{Section summary}
+
+\begin{itemize}
+  \item The Curry-Howard correspondence tells us that we can interpret
+logical propositions as the types of valid proofs of that proposition.
+  \item Under the Curry-Howard correspondence, conjunction $A \land B$
+corresponds to the pair type $A\ \data{×}\ B$, implication $A
+\Rightarrow B$ corresponds to the function type $A \to B$, disjunction
+$A \lor B$ corresponds to the type $\data{Either}\ A\ B$, truth
+corresponds to the unit type $\data{⊤}$, and falsity corresponds to
+the empty type $\data{⊥}$.
+\item Under the Curry-Howard correspondence, predicates on values
+correspond to \emph{dependent types}. For example, we can represent
+the predicate `$n$ is even' as the type $\data{IsEven}\ n$.
+\item Universal quantification $\forall (x\in A).~P(x)$ corresponds to
+the dependent function type $(x : A) → P\ x$, and existential
+quantification $\exists (x\in A).~P(x)$ corresponds to the dependent
+pair type $\sigmatype\ A\ (\lambda x → P\ x)$.
+\item The identity type $x~\data{≡}~y$ represents the proposition that
+$x$ and $y$ are equal. It is defined as an indexed datatype with a
+single constructor $\con{refl} : x~\data{≡}~x$. Other properties of
+equality such as symmetry, transitivity, and congruence can be proven
+by pattern matching on $\refl$.
+\end{itemize}
 
 \section{Equational reasoning in Agda}
 
@@ -2721,6 +2799,22 @@ compile-exec-eval e =
 \end{AgdaSuppressSpace}
 \end{AgdaAlign}
 
+\subsection{Section summary}
+
+\begin{itemize}
+  \item Equational reasoning is the process of proving that two
+expressions are equivalent by giving a sequence of equalities. In
+Agda, we can write equational reasoning proofs by using the operators
+$\fun{begin\_}$, $\fun{\_end}$, $\fun{\_=⟨\_⟩\_}$, and
+$\fun{\_=⟨⟩\_}$.
+  \item We can write proofs by case analysis as functions that use
+pattern matching, and proofs by induction as functions that call
+themselves recursively on smaller arguments.
+  \item Equational reasoning can be used to prove many properties of
+functional programs. In particular, we can use it to prove typeclass
+laws for specific instances, to verify the correcness of
+optimizations, and to prove compiler correctness.
+\end{itemize}
 
 
 \appendix
