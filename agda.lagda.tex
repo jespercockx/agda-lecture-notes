@@ -917,7 +917,7 @@ function types. This is no coincidence: in Agda, polymorphic functions
 are just a special case of dependent functions where the argument is
 of type $\ty{}$.
 
-Let us now take a closer look at the $\Vec$ type\footnote{Technically,
+Let us now take a closer look at the $\Vec$ type\footnote[][-1cm]{Technically,
 $\Vec$ is not a type but a \emph{family} of types $\Vec\ A\ n$. This
 is also the case for other indexed datatypes we will see later.}
 itself. It is defined as follows:
@@ -931,7 +931,7 @@ module ThrowAwayVec where
   infixr 5 _::_
 \end{code}
 %
-\marginnote[-4cm]{%
+\marginnote[-3cm]{%
 \paragraph{Parameters vs.~indices.}
 You might wonder why the argument $(A : \ty{})$ appears \emph{before}
 the colon in the definition of $\Vec$, while the argument type $\Nat$
@@ -1485,7 +1485,7 @@ proof3 f = (λ x → f (left x)) , (λ y → f (right y))
 
 \end{itemize}
 
-\marginnote[-6cm]{
+\marginnote[-13cm]{
 \begin{exercise}
 Translate the following propositions to Agda types
 using the Curry-Howard correspondence, and prove them by implementing
@@ -1501,7 +1501,7 @@ a function of that type.
 }
 
 
-\marginnote{
+\marginnote[-8cm]{
 \paragraph{Constructive mathematics.}
 You may already have noticed that certain propositions that are
 typically held to be true cannot be proven when translated to Agda via
@@ -1928,6 +1928,7 @@ sense that $\fun{reverse}\ \fun{[}\ x\ \fun{]} = \fun{[}\ x\
 \fun{]}$ for any value $x$, where $\fun{[}\ x\ \fun{]} = x\ \cons\
 \nil$:
 \begin{AgdaAlign}
+\begin{AgdaSuppressSpace}
 \begin{code}[number]
 [_] : {A : Set} → A → List A
 [ x ] = x :: []
@@ -1935,7 +1936,8 @@ sense that $\fun{reverse}\ \fun{[}\ x\ \fun{]} = \fun{[}\ x\
 reverse : {A : Set} → List A → List A
 reverse [] = []
 reverse (x :: xs) = reverse xs ++ [ x ]
-
+\end{code}
+\begin{code}[number]
 reverse-singleton : {A : Set} (x : A) → reverse [ x ] ≡ [ x ]
 reverse-singleton x =
   begin
@@ -1950,6 +1952,7 @@ reverse-singleton x =
     [ x ]
   end
 \end{code}
+\end{AgdaSuppressSpace}
 \end{AgdaAlign}
 From this, we can see the general structure of a proof that uses
 equational reasoning: it starts with $\fun{begin}$ and ends with
