@@ -1198,7 +1198,11 @@ $\sigmatype\ \Nat\ (\lambda n \to \Vec\ \Bool \ n)$) contains the
 elements $\lit{2}\ \con{,}\ (\true\ \cons\ \false\ \cons\ \nil)$ and
 $\lit{0}\ \con{,}\ \nil$ but not $\lit{2}\ \con{,}\ \nil$ (since $\nil$ does not
 have type $\Vec\ \Bool\ \lit{2}$). In general, this type consists of pairs
-$m\ \con{,}\ \var{xs}$ where $m : \Nat$ and $\var{xs} : \Vec\ A\ m$.
+$m\ \con{,}\ \var{xs}$ where $m : \Nat$ and $\var{xs} : \Vec\ A\ m$.%
+\footnote{The dependent pair type is also called the $\Sigma$ type
+because it can be seen as a \emph{sum} (or disjoint union) of all
+the types $B\ x$, where we view the first component as a label indicating
+which type of the family the second component belongs to.}
 
 We can define the type $\sigmatype$ of dependent pairs as follows:%
 \footnote{To write $\Sigma$, type \texttt{\textbackslash{}Sigma}.}
