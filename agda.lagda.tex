@@ -281,7 +281,7 @@ can be used to query the typechecker. Here are two that are used very often:
 \item[Normalize expression (\texttt{Ctrl+c Ctrl+n})] This command will ask you
   for an expression, which it will evaluate as far as possible. For
   example, running this command and entering \texttt{greet} will
-  return the fully evaluated term \texttt{hello}. 
+  return the fully evaluated term \texttt{hello}.
 \end{description}
 
 Since there is no syntactic difference between values, functions, and types in
@@ -413,7 +413,7 @@ Just like in Haskell, a definition by pattern matching consists of a list of
 \emph{clauses} or equalities. Also like in Haskell, functions can make
 \emph{recursive calls} to themselves on the right-hand side of a clause.
 
-To test our definition, we first load the file in VS Code 
+To test our definition, we first load the file in VS Code
 (\texttt{Ctrl+c Ctrl+l}) and then ask Agda to evaluate an expression
  by pressing \texttt{Ctrl+c Ctrl+n} (for ``normalize expression'').
  A prompt will appear where
@@ -506,14 +506,14 @@ module ThrowAway2 where
   the hole (between the \texttt{\{!} and \texttt{!\}} signs)
   and then press \texttt{Ctrl+c Ctrl+c} to split on that variable.
 \item[Give (\texttt{Ctrl+c Ctrl+space})] This command allows
-  you to enter an expression into a hole. For example, if you put 
+  you to enter an expression into a hole. For example, if you put
   our cursor in the first hole in the definition of \fun{not}
   and press \texttt{Ctrl+c Ctrl+space}, Agda will prompt us
   for an expression to give. You can then enter \con{false} in
   the prompt and press \texttt{enter}. Agda will check that the
   expression is of the right type (in this case \data{Bool}) and
   then (if typechecking is successful) replace the hole with the given
-  expression. 
+  expression.
   \begin{code}[hide]
 module ThrowAway3 where
 \end{code}%
@@ -583,7 +583,7 @@ not allowed in Agda. Concretely, in 1972 the logician Jean-Yves Girard
 discovered a paradox in type theory (which is also at the basis of
 Agda). If Agda would allow $\ty{} : \ty{}$, it would break logical
 soundness of Agda, which is important for using Agda as a theorem
-prover (see later). More concretely, with $\ty{} : \ty{}$ it would 
+prover (see later). More concretely, with $\ty{} : \ty{}$ it would
 be possible to circumvent Agda's termination checker and implement
 non-terminating functions. To avoid this paradox and
 the problems it causes, Agda introduces another type $\ty{1}$ such
@@ -1023,7 +1023,7 @@ data Fin : Nat → Set where
 \end{code}
 The constructor \con{zero} constructs
 an element of type $\data{Fin}~(\suc\ n)$ for any $n$,
-while $\suc$ constructs a new element of type $\data{Fin}\ 
+while $\suc$ constructs a new element of type $\data{Fin}\
 (\suc\ n)$ for each element of type $\data{Fin}\ n$.
 In particular, there is no way
 to construct an element of type $\data{Fin}\ \lit{0}$.
@@ -1052,12 +1052,12 @@ using \suc{} would require us to give an element of type $\Fin\ \lit{0}$.
   \node (ssz5) [above=of sz5] {$\cdots$};
   \node (sssz4) [above=of ssz4] {$\suc$};
   \node (sssz5) [above=of ssz5] {$\cdots$};
-  \draw[->] (sz2) to (z1); 
-  \draw[->] (sz3) to (z2); 
-  \draw[->] (sz4) to (z3); 
+  \draw[->] (sz2) to (z1);
+  \draw[->] (sz3) to (z2);
+  \draw[->] (sz4) to (z3);
   \draw[->] (ssz3) to (sz2);
   \draw[->] (ssz4) to (sz3);
-  \draw[->] (sssz4) to (ssz3); 
+  \draw[->] (sssz4) to (ssz3);
 \end{tikzpicture}
 \caption{We can visualize the family of $\Fin$ types as an (infinite) triangle,
 where each type other than $\Fin\ \lit{0}$ has an element $\zero$, and each type also
@@ -1102,7 +1102,7 @@ module LookupVec3 where
   lookupVec []         ()
   lookupVec (x :: xs)  i   = {!!}
 \end{code}
-Something interesting has happened: the index has been replaced by 
+Something interesting has happened: the index has been replaced by
 the special syntax $()$ and the equality sign
 has disappeared. This is Agda's way to indicate that there is no
 element of type $\Fin\ \zero$, i.e.~there is no possible index into a
@@ -2698,7 +2698,7 @@ compile'-exec-eval (addE e1 e2) s c =
 compile-exec-eval : (e : Expr) → exec (compile e) [] ≡ [ eval e ]
 compile-exec-eval e =
   begin
-    exec (compile e) [] 
+    exec (compile e) []
   =⟨ compile'-exec-eval e [] [] ⟩                        -- using compile'-exec-eval lemma
     exec [] (eval e :: [])
   =⟨⟩                                                    -- applying exec for []
