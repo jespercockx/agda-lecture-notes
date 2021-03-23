@@ -1541,7 +1541,10 @@ The type $\data{IsTrue}\ b$ has exactly one constructor if and only if
 $b$ is $\true$, and it is empty if $b$ is false. By using this type in
 conjunction with a function that returns a boolean, we can easily
 express many properties. For example, we can define the function
-$\fun{\_=Nat\_}$ that checks equality of two numbers, and use it to
+$\fun{\_=Nat\_}$ that checks equality of two numbers,\footnote{Note that
+$\Nat$ is just a user-defined datatype in Agda, so it does not come with
+a predefined notion of equality.}
+and use it to
 prove that the list $\lit{1}\ \cons\ \lit{2}\ \cons\ \lit{3}\ \cons\
 \nil$ has length $\lit{3}$:
 \begin{code}[number]
