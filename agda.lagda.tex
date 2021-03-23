@@ -1004,20 +1004,22 @@ type of the function enforces the two vectors to have the same length!
 \end{exercise}
 }
 
-\subsection{Indexing vectors with the $\Fin$ type}
+\subsection{Looking up elements of a vector with the $\Fin$ type}
 
 One important operation on lists is looking up the element at a given
 position. In Haskell, this is implemented by the function
 \texttt{(!!)~::~[a] -> Int -> a}. However, this is a partial function:
-if the index is too big (or negative) the function will throw an
-error. Since throwing errors is not allowed in Agda, we are forced to
-give it the type $\{A : \ty{}\} \to \List\ A \to \Nat \to
-\data{Maybe}\ A$, and return $\con{nothing}$ in case the index is too
-big. However, we can do better by using $\Vec$ instead of $\List$ and
-requiring the index to be in range of the vector. To make this work,
-we introduce a new type $\Fin\ n$ of \emph{finite sets}. This type
-consists of all natural numbers less than $n$, i.e.~the numbers
-$0,1,2,\ldots,(n-1)$.
+if the position\footnote{The position in a vector is often called an
+index, but we will refrain from calling it that to avoid confusion
+with the concept of an index for an indexed datatype.} is too big (or
+negative) the function will throw an error. Since throwing errors is
+not allowed in Agda, we are forced to give it the type
+$\{A : \ty{}\} \to \List\ A \to \Nat \to \data{Maybe}\ A$, and return
+$\con{nothing}$ in case the position is out of range. However, we can do
+better by using $\Vec$ instead of $\List$ and requiring the position to
+be in range of the vector. To make this work, we introduce a new type
+$\Fin\ n$ of \emph{finite sets}. This type consists of all natural
+numbers less than $n$, i.e.~the numbers $0,1,2,\ldots,(n-1)$.
 
 As an example, the type $\Fin\ \lit{3}$ contains three elements:
 \begin{code}[hide]
@@ -1048,9 +1050,9 @@ define $\suc\ (\suc\ (\suc\ \zero))$ as an element of $\Fin\ \lit{3}$.
 
 The type $\Fin\ \lit{0}$ in particular
 contains \emph{zero} arguments: it is an \emph{empty type}.
-This makes sense as we want to use $\Fin\ n$ as an index
-into a vector of length $n$, and there are no valid indices
-into a vector of length $\lit{0}$. Empty types will take an important role once
+This makes sense as we want to use $\Fin\ n$ as an position
+in a vector of length $n$, and there are no valid positions
+in a vector of length $\lit{0}$. Empty types will take an important role once
 we start using Agda as a proof assistant in the next section.
 
 The type $\Fin$ is defined as follows:
@@ -1120,7 +1122,7 @@ module LookupVec1 where
   lookupVec xs i = {!!}
 \end{code}
 Notice that the length $n$ of the vector is also used as the upper
-bound for the index: this way we enforce that the index really is in
+bound for the position: this way we enforce that the position really is in
 range of the vector. We then split on the vector $\var{xs}$ using \texttt{Ctrl+c Ctrl+c}:
 \begin{code}[hide]
 module LookupVec2 where
@@ -1130,7 +1132,7 @@ module LookupVec2 where
   lookupVec []         i = {!!}
   lookupVec (x :: xs)  i = {!!}
 \end{code}
-So far, so good. Next, we split on the index $i$ in the
+So far, so good. Next, we split on the position $i$ in the
 first clause:
 \begin{code}[hide]
 module LookupVec3 where
@@ -1140,17 +1142,17 @@ module LookupVec3 where
   lookupVec []         ()
   lookupVec (x :: xs)  i   = {!!}
 \end{code}
-Something interesting has happened: the index has been replaced by
+Something interesting has happened: the position has been replaced by
 the special syntax $()$ and the equality sign
 has disappeared. This is Agda's way to indicate that there is no
-element of type $\Fin\ \zero$, i.e.~there is no possible index into a
+element of type $\Fin\ \zero$, i.e.~there is no possible position in a
 vector of length $\lit{0}$. The special pattern $()$ used to indicate this
 is called an \emph{absurd pattern}, and the clause is called an
 \emph{absurd clause}.
 
 
 Having completed the case for the empty vector $\nil$, we can
-also split on the index $i$ in the second clause:
+also split on the position $i$ in the second clause:
 \begin{code}[hide]
 module LookupVec4 where
 \end{code}
