@@ -73,6 +73,7 @@
 \newcommand\con[1]{{\AgdaInductiveConstructor{#1}}}
 \newcommand\field[1]{{\AgdaField{#1}}}
 \newcommand\keyw[1]{{\AgdaKeyword{#1}}}
+\newcommand\lit[1]{{\AgdaNumber{#1}}}
 \newcommand\level{\fun{Level}}
 \newcommand\ite[3]{\fun{if}\  #1\  \fun{then}\  #2\  \fun{else}\  #3}
 
@@ -339,12 +340,12 @@ for a function or variable!
 compared to other data structures. In particular, there is no special syntax
 for list literals or list comprehensions in Agda. Instead, the type
 $\data{List}\ A$ is simply a datatype defined with two constructors $\con{[]}$
-and $\con{\_∷\_}$. The Haskell list \texttt{[1,2,3]} can then be written in
-Agda as $1\ \con{∷}\ 2\ \con{∷}\ 3\ \con{∷}\ \con{[]}$.
+and $\con{\_::\_}$. The Haskell list \texttt{[1,2,3]} can then be written in
+Agda as $\lit{1}\ \con{::}\ \lit{2}\ \con{::}\ \lit{3}\ \con{::}\ \con{[]}$.
 
 \item[Tuples] Similarly, Agda does not have a special built-in type of tuples.
 Instead, the type $A\ \data{×}\ B$ is defined as a datatype with one
-constructor $\con{\_,\_}$. For example, we have $6\ \con{,}\ \con{true} : \Nat\
+constructor $\con{\_,\_}$. For example, we have $\lit{6}\ \con{,}\ \con{true} : \Nat\
 \data{×}\ \Bool$.
 
 %\item[Type classes] Agda does not have type classes as in Haskell. Instead, it
@@ -380,7 +381,7 @@ pragma below the definition of $\Nat$:
 {-# BUILTIN NATURAL Nat #-}
 \end{code}
 Once we have activated this pragma, Agda will interpret the numbers
-$0$, $1$, $2$, \ldots using the constructors $\zero$ and $\suc$.
+$\lit{0}$, $\lit{1}$, $\lit{2}$, \ldots using the constructors $\zero$ and $\suc$.
 }
 We can immediately spot a few differences with the corresponding Haskell
 definition \texttt{data Nat = Zero | Suc Nat}:
@@ -616,8 +617,8 @@ Just as we can define polymorphic functions, we can also define
 polymorphic datatypes by adding an argument of type $\ty{}$. For
 example, the type of lists can be defined as follows:%
 \footnote[][-1.5cm]{In order to write expressions such as
-$1\ \cons\ 2\ \cons\ 3\ \cons\ \nil$ (as opposed to
-$1\ \cons\ (2\ \cons\ (3\ \cons\ \nil))$), we also need to tell Agda
+$\lit{1}\ \cons\ \lit{2}\ \cons\ \lit{3}\ \cons\ \nil$ (as opposed to
+$\lit{1}\ \cons\ (\lit{2}\ \cons\ (\lit{3}\ \cons\ \nil))$), we also need to tell Agda
 that $\cons$ is right associative. We can do so as follows:
 \begin{code}
 infixr 5 _::_
@@ -817,7 +818,7 @@ $\nil$ can be a constructor of both $\List$ and $\Vec$.
 %
 In fact, the length $n$ does not have to be a literal number, but it
 can be any expression of type $\Nat$. So we might as well have written
-$\data{Vec}\ \Nat\ (2\ +\ 3)$ instead of $\data{Vec}\ \Nat\ 5$.
+$\data{Vec}\ \Nat\ (\lit{2}\ \fun{+}\ \lit{3})$ instead of $\data{Vec}\ \Nat\ \lit{5}$.
 
 In a dependently typed language, the return type of a function is
 allowed to depend on the inputs of the function. For example, we can
@@ -841,7 +842,7 @@ so the output must have type $\Vec\ \Nat\ (\suc\ n)$.
   Implement the function
   $\fun{downFrom} : (n : \Nat) \to \Vec\ \Nat\ n$ that, given a number
   $n$, produces the vector
-  $(n-1)\ \cons\ (n-2)\ \cons\ \ldots\ \cons\ 0$. (You'll need to copy
+  $(n-1)\ \cons\ (n-2)\ \cons\ \ldots\ \cons\ \lit{0}$. (You'll need to copy
   the definition of the $\Vec$ type below to test if your definition
   typechecks.)
 \end{exercise}
@@ -871,9 +872,9 @@ we can make it implicit by using curly braces $\{\}$:
 \end{code}
 This allows us for example to write
 $\fun{prepend}\ \true\ (\false\ \cons\ \nil)$ instead of
-$\fun{prepend}\ 1\ \true\ (\false\ \cons\ \nil)$. Here Agda infers
+$\fun{prepend}\ \lit{1}\ \true\ (\false\ \cons\ \nil)$. Here Agda infers
 automatically from the length of the vector $\false\ \cons\ \nil$ that
-$n$ must be $1$.
+$n$ must be $\lit{1}$.
 
 Note that dependent function types use the same syntax as polymorphic
 function types. This is no coincidence: in Agda, polymorphic functions
@@ -911,7 +912,7 @@ datatype}: it is no longer $\ty{}$ but instead $\Nat \to \ty{}$,
 indicating that it takes one additional argument of type $\Nat$. This
 argument is called an \emph{index}, and correspondingly $\Vec$ is
 called an \emph{indexed datatype}. This is reflected in the types of
-the constructors: $\nil$ constructs a vector of length $0$, while
+the constructors: $\nil$ constructs a vector of length $\lit{0}$, while
 $\_\cons\_$ takes arguments of type $A$ and $\Vec\ A\ n$ and
 constructs a vector of length $\suc\ n$, where $n$ is an implicit
 argument of the constructor.
@@ -980,7 +981,7 @@ we introduce a new type $\Fin\ n$ of \emph{finite sets}. This type
 consists of all natural numbers less than $n$, i.e.~the numbers
 $0,1,2,\ldots,(n-1)$.
 
-As an example, the type $\Fin\ 3$ contains three elements:
+As an example, the type $\Fin\ \lit{3}$ contains three elements:
 \begin{code}[hide]
 module ThrowAwayFin where
   data Fin : Nat → Set where
@@ -997,7 +998,7 @@ module ThrowAwayFin where
   two3 : Fin 3
   two3   = suc (suc zero)
 \end{code}
-However, if we try to define $\fun{three3} : \Fin\ 3$ as
+However, if we try to define $\fun{three3} : \Fin\ \lit{3}$ as
 $\suc\ (\suc\ (\suc\ \zero))$, we get an error:
 \begin{verbatim}
 (suc _n_112) != zero of type Nat
@@ -1005,13 +1006,13 @@ when checking that the expression zero has type Fin 0
 \end{verbatim}
 Without immediately going into the full details of this error message,
 we can already infer that Agda does not allow us to
-define $\suc\ (\suc\ (\suc\ \zero))$ as an element of $\Fin\ 3$.
+define $\suc\ (\suc\ (\suc\ \zero))$ as an element of $\Fin\ \lit{3}$.
 
-The type $\Fin\ 0$ in particular 
+The type $\Fin\ \lit{0}$ in particular
 contains \emph{zero} arguments: it is an \emph{empty type}.
 This makes sense as we want to use $\Fin\ n$ as an index
 into a vector of length $n$, and there are no valid indices
-into a vector of length $0$. Empty types will take an important role once
+into a vector of length $\lit{0}$. Empty types will take an important role once
 we start using Agda as a proof assistant in the next section.
 
 The type $\Fin$ is defined as follows:
@@ -1025,17 +1026,17 @@ an element of type $\data{Fin}~(\suc\ n)$ for any $n$,
 while $\suc$ constructs a new element of type $\data{Fin}\ 
 (\suc\ n)$ for each element of type $\data{Fin}\ n$.
 In particular, there is no way
-to construct an element of type $\data{Fin}\ 0$. 
-For type $\Fin\ 1$ the only possible constructor is \zero, since
-using \suc{} would require us to give an element of type $\Fin\ 0$.
+to construct an element of type $\data{Fin}\ \lit{0}$.
+For type $\Fin\ \lit{1}$ the only possible constructor is \zero, since
+using \suc{} would require us to give an element of type $\Fin\ \lit{0}$.
 
 \begin{figure}
 \begin{tikzpicture}[node distance=0.2cm and 0.8cm, auto]
-  \node (fz) {$\Fin\ 0$};
-  \node (fsz) [right=of fz] {$\Fin\ 1$};
-  \node (fssz) [right=of fsz] {$\Fin\ 2$};
-  \node (fsssz) [right=of fssz] {$\Fin\ 3$};
-  \node (fssssz) [right=of fsssz] {$\Fin\ 4$};
+  \node (fz) {$\Fin\ \lit{0}$};
+  \node (fsz) [right=of fz] {$\Fin\ \lit{1}$};
+  \node (fssz) [right=of fsz] {$\Fin\ \lit{2}$};
+  \node (fsssz) [right=of fssz] {$\Fin\ \lit{3}$};
+  \node (fssssz) [right=of fsssz] {$\Fin\ \lit{4}$};
   \node (fsssssz) [right=of fssssz] {$\cdots$};
   \node (z1) [above=of fsz] {$\zero$};
   \node (z2) [above=of fssz] {$\zero$};
@@ -1059,7 +1060,7 @@ using \suc{} would require us to give an element of type $\Fin\ 0$.
   \draw[->] (sssz4) to (ssz3); 
 \end{tikzpicture}
 \caption{We can visualize the family of $\Fin$ types as an (infinite) triangle,
-where each type other than $\Fin\ 0$ has an element $\zero$, and each type also
+where each type other than $\Fin\ \lit{0}$ has an element $\zero$, and each type also
 has all elements of the form $\suc\ x$ where $x$ belongs to the \emph{previous}
 type in the family.}
 \end{figure}
@@ -1105,7 +1106,7 @@ Something interesting has happened: the index has been replaced by
 the special syntax $()$ and the equality sign
 has disappeared. This is Agda's way to indicate that there is no
 element of type $\Fin\ \zero$, i.e.~there is no possible index into a
-vector of length $0$. The special pattern $()$ used to indicate this
+vector of length $\lit{0}$. The special pattern $()$ used to indicate this
 is called an \emph{absurd pattern}, and the clause is called an
 \emph{absurd clause}.
 
@@ -1154,9 +1155,9 @@ $A\ \prod\ B$ where the type of the second component can be different
 depending on the value of the first component. For example, the type
 $\sigmatype\ \Nat\ (\Vec\ \Bool)$ (or equivalently,
 $\sigmatype\ \Nat\ (\lambda n \to \Vec\ \Bool \ n)$) contains the
-elements $2\ \con{,}\ (\true\ \cons\ \false\ \cons\ \nil)$ and
-$0\ \con{,}\ \nil$ but not $2\ \con{,}\ \nil$ (since $\nil$ does not
-have type $\Vec\ \Bool\ 2$). In general, this type consists of pairs
+elements $\lit{2}\ \con{,}\ (\true\ \cons\ \false\ \cons\ \nil)$ and
+$\lit{0}\ \con{,}\ \nil$ but not $\lit{2}\ \con{,}\ \nil$ (since $\nil$ does not
+have type $\Vec\ \Bool\ \lit{2}$). In general, this type consists of pairs
 $m\ \con{,}\ \var{xs}$ where $m : \Nat$ and $\var{xs} : \Vec\ A\ m$.
 
 We can define the type $\sigmatype$ of dependent pairs as follows:%
@@ -1470,10 +1471,10 @@ So far, we have used the Curry-Howard correspondence to view formulas
 from propositional logic as Agda types, and prove them by writing down
 functions. However, we would also like to write down and prove
 propositions that say something about a given value or function. For
-example, we would like to be able to prove that $6$ is even, or that
+example, we would like to be able to prove that $\lit{6}$ is even, or that
 $\fun{length}\ (\fun{map}\ f\ \var{xs})$ is equal to $\fun{length}\
 \var{xs}$ for all $\var{xs}$, or that there exists a number $n$ such
-that $n\ \fun{+}\ n = 12$. In order to prove such statements, we first
+that $n\ \fun{+}\ n = \lit{12}$. In order to prove such statements, we first
 need to answer two more questions: how can we define predicates that
 express concrete properties such as being even, and how can we express
 quantifiers such as ``for all'' and ``there exists''.
@@ -1488,15 +1489,15 @@ data IsEven : Nat → Set where
   even-suc2 : {n : Nat} → IsEven n → IsEven (suc (suc n))
 \end{code}
 Note that $\data{IsEven}$ is an \emph{indexed datatype}, just like
-$\data{Vec}$ and $\data{Fin}$ We can then easily prove that $6$ is
+$\data{Vec}$ and $\data{Fin}$ We can then easily prove that $\lit{6}$ is
 even:
 \begin{code}[number]
 6-is-even : IsEven 6
 6-is-even = even-suc2 (even-suc2 (even-suc2 even-zero))
 \end{code}
-On the other hand, there is no way to prove that $7$ is even:
-$\data{IsEven}\ 7$ is an empty type. In fact, we can prove that
-$\data{IsEven}\ 7$ is false by defining a function from this type to
+On the other hand, there is no way to prove that $\lit{7}$ is even:
+$\data{IsEven}\ \lit{7}$ is an empty type. In fact, we can prove that
+$\data{IsEven}\ \lit{7}$ is false by defining a function from this type to
 $\bottomtype$:
 \begin{code}[number]
 7-is-not-even : IsEven 7 → ⊥
@@ -1534,8 +1535,8 @@ $b$ is $\true$, and it is empty if $b$ is false. By using this type in
 conjunction with a function that returns a boolean, we can easily
 express many properties. For example, we can define the function
 $\fun{\_=Nat\_}$ that checks equality of two numbers, and use it to
-prove that the list $1\ \cons\ 2\ \cons\ 3\ \cons\
-\nil$ has length $3$:
+prove that the list $\lit{1}\ \cons\ \lit{2}\ \cons\ \lit{3}\ \cons\
+\nil$ has length $\lit{3}$:
 \begin{code}[number]
 _=Nat_ : Nat → Nat → Bool
 zero     =Nat  zero     = true
@@ -1650,15 +1651,15 @@ n-equals-n (suc m)  = n-equals-n m
 
 We can now also prove existential statements by making use of the
 $\sigmatype$ type. For example, we can prove that there exists a
-number $n$ such that $n\ \fun{+}\ n = 12$ by exhibiting the number
-$6$:
+number $n$ such that $n\ \fun{+}\ n = \lit{12}$ by exhibiting the number
+$\lit{6}$:
 \begin{code}[number]
 half-a-dozen : Σ Nat (λ n → IsTrue ((n + n) =Nat 12))
 half-a-dozen = 6 , is-true
 \end{code}
 
 
-As another example, we can prove that any number $n$ is either $0$ or
+As another example, we can prove that any number $n$ is either $\lit{0}$ or
 the successor of another number $m$:
 \begin{code}[number]
 zero-or-suc : (n : Nat)
@@ -1709,7 +1710,7 @@ that Whitehead and Russell needed to prove this fact!}
 one-plus-one : 1 + 1 ≡ 2
 one-plus-one = refl
 \end{code}
-\ldots and that $0$ is not equal to $1$:\footnote{Exciting!}
+\ldots and that $\lit{0}$ is not equal to $\lit{1}$:\footnote{Exciting!}
 \begin{code}[number]
 zero-not-one : 0 ≡ 1 → ⊥
 zero-not-one ()
@@ -1725,14 +1726,14 @@ id-returns-input x = refl
 \paragraph{Unit tests in Agda.} A neat trick you can do in
 Agda is to write unit tests directly in your code by making use of the
 identity type. For example, we can write a test that $\fun{length}\
-(1\ \cons\ 2\ \cons\ \nil)$ is $2$ as follows:
+(\lit{1}\ \cons\ \lit{2}\ \cons\ \nil)$ is $\lit{2}$ as follows:
 \begin{code}[number]
 length-test1 :
   length (1 :: 2 :: []) ≡ 2
 length-test1 = refl
 \end{code}
-When the Agda typechecker checks that $\refl : \fun{length}\ (1\
-\cons\ 2\ \cons\ \nil)\ \Id\ 2$, it will evaluate both sides
+When the Agda typechecker checks that $\refl : \fun{length}\ (\lit{1}\
+\cons\ \lit{2}\ \cons\ \nil)\ \Id\ \lit{2}$, it will evaluate both sides
 to make sure they are indeed equal. So if anything changes and the
 test no longer succeeds, you will know immediately as the file will
 not even typecheck any more!
@@ -1889,10 +1890,10 @@ not-not true =
 \end{code}
 
 We can also prove facts about natural numbers by induction
-(i.e.~recursion). For example, we can prove that $n\ \fun{+}\ 0 = n$
+(i.e.~recursion). For example, we can prove that $n\ \fun{+}\ \lit{0} = n$
 for all $n : \Nat$ (note that this fact is not immediately obvious
 from the definition of $\fun{\_+\_}$, which only says something about
-$0\ \fun{+}\ n$ and $(\suc\ m)\ \fun{+}\ n$):
+$\lit{0}\ \fun{+}\ n$ and $(\suc\ m)\ \fun{+}\ n$):
 \begin{AgdaAlign}
 \begin{AgdaSuppressSpace}
 \begin{code}[number]
@@ -1916,14 +1917,14 @@ add-n-zero (suc n) =
 \end{code}
 \end{AgdaSuppressSpace}
 \end{AgdaAlign}
-In order to prove that $\suc\ (n\ \fun{+}\ 0)$ is equal to $\suc\ n$,
+In order to prove that $\suc\ (n\ \fun{+}\ \lit{0})$ is equal to $\suc\ n$,
 we have to make use of the induction hypothesis $\fun{add-n-zero}\ n$,
-which says that $n\ \fun{+}\ 0 = n$. Agda cannot figure this out on its
+which says that $n\ \fun{+}\ \lit{0} = n$. Agda cannot figure this out on its
 own, so we have to provide the proof manually. This is where the
 operator $\fun{\_=⟨\_⟩\_}$ comes in: it allows us to provide an
 equality proof in between the angle brackets. We have to provide a
-proof of $\suc\ (n\ \fun{+}\ 0)\ \Id\ \suc\ n$ but $\fun{add-n-zero}\
-n$ has type $n\ \fun{+}\ 0\ \Id\ n$, so we apply $\fun{cong}\ \suc$ to
+proof of $\suc\ (n\ \fun{+}\ \lit{0})\ \Id\ \suc\ n$ but $\fun{add-n-zero}\
+n$ has type $n\ \fun{+}\ \lit{0}\ \Id\ n$, so we apply $\fun{cong}\ \suc$ to
 it to apply $\suc$ to both sides of the equation.
 
 
