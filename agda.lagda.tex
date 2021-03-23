@@ -917,8 +917,10 @@ function types. This is no coincidence: in Agda, polymorphic functions
 are just a special case of dependent functions where the argument is
 of type $\ty{}$.
 
-Let us now take a closer look at the $\Vec$ type itself. It is defined
-as follows:
+Let us now take a closer look at the $\Vec$ type\footnote{Technically,
+$\Vec$ is not a type but a \emph{family} of types $\Vec\ A\ n$. This
+is also the case for other indexed datatypes we will see later.}
+itself. It is defined as follows:
 \begin{code}[hide]
 module ThrowAwayVec where
 \end{code}
