@@ -1573,9 +1573,10 @@ $\bottomtype$:
 7-is-not-even : IsEven 7 → ⊥
 7-is-not-even (even-suc2 (even-suc2 (even-suc2 ())))
 \end{code}
-Here we have to case split three times on the constructor
-$\con{even-suc2}$ (using \texttt{Ctrl+c Ctrl+c}) before Agda accepts
-the absurd pattern $()$.
+Here we have to case split four times (using \texttt{Ctrl+c Ctrl+c})
+before Agda can see that there is indeed no proof of
+$\data{IsEven}\ \lit{7}$. Note in particular that it is possible for a
+absurd pattern $()$ to appear as an argument to a constructor.
 
 One predicate that is often quite useful is the predicate stating that
 a given $\Bool$ is $\true$. It can be defined as follows:
