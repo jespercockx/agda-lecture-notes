@@ -494,7 +494,7 @@ b : Bool
   split on a variable. For example, if you put the cursor in the hole
   in the definition of \fun{not} and press \texttt{Ctrl+c Ctrl+c},
   Agda will prompt us for a variable to split on. You can then
-  enter the name $\var{x}$ of the variable and press \texttt{enter},
+  enter the name $\var{b}$ of the variable and press \texttt{enter},
   giving us the following result:
 \begin{code}[hide]
 module ThrowAway2 where
@@ -1934,8 +1934,8 @@ sense that $\fun{reverse}\ \fun{[}\ x\ \fun{]} = \fun{[}\ x\
 [ x ] = x :: []
 
 reverse : {A : Set} → List A → List A
-reverse [] = []
-reverse (x :: xs) = reverse xs ++ [ x ]
+reverse []         = []
+reverse (x :: xs)  = reverse xs ++ [ x ]
 \end{code}
 \begin{code}[number]
 reverse-singleton : {A : Set} (x : A) → reverse [ x ] ≡ [ x ]
