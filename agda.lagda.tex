@@ -425,13 +425,6 @@ Just like in Haskell, a definition by pattern matching consists of a \emph{type 
 \emph{clauses} or equalities. Also like in Haskell, functions can make
 \emph{recursive calls} to themselves on the right-hand side of a clause.
 
-To test our definition, we first load the file in VS Code
-(\texttt{Ctrl+c Ctrl+l}) and then ask Agda to evaluate an expression
- by pressing \texttt{Ctrl+c Ctrl+n} (for ``normalize expression'').
- A prompt will appear where
-you can enter the term to be evaluated. For example, if you enter \texttt{(suc
-zero) + (suc zero)} you should get back the response \texttt{suc (suc zero)}.
-
 \marginnote{
 \begin{exercise}
 Define the function $\fun{halve} : \Nat → \Nat$ that
@@ -439,6 +432,16 @@ computes the result of dividing the given number by 2 (rounded down). Test your
 definition by evaluating it for several concrete inputs.
 \end{exercise}
 }
+
+To test our definition, we first load the file in VS Code
+(\texttt{Ctrl+c Ctrl+l}) and then ask Agda to evaluate an expression
+by pressing \texttt{Ctrl+c Ctrl+n} (for ``normalize expression'').  A
+prompt will appear where you can enter the term to be evaluated. For
+example, if you enter \texttt{(suc zero) + (suc zero)} you should get
+back the response \texttt{suc (suc zero)}.\footnote{Agda also has
+built-in support for writing numerals \lit{0}, \lit{1}, \lit{2}\ldots
+instead of \con{zero}, (\con{suc} \con{zero}), (\con{suc} (\con{suc}
+\con{zero}))\ldots This can be activated with the pragma \texttt{\{-\# BUILTIN NATURAL Nat \#-\}}.}
 
 
 \marginnote{
