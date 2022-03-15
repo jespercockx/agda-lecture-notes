@@ -258,7 +258,7 @@ click the Extensions button on the left, enter the name of the
 extension, and click `install'.} Other IDEs with support for Agda are
 Emacs and Atom.
 
-You can test to see if you’ve installed Agda correctly by creating a file
+You can test to see if you've installed Agda correctly by creating a file
 called \texttt{hello.agda} with these lines:
 
 \begin{code}[number]
@@ -838,7 +838,7 @@ can use dependent types in Agda and why they can be useful.
 \subsection{Vectors: lists that know their length}
 
 The prototypical example of a dependent type is the type of
-\emph{vectors} $\Vec\ A\ n$. This type contains vectors of exactly $n$
+\emph{vectors} $\Vec\ A\ n$. This type contains lists of exactly $n$
 elements of type $A$. For example:
 \begin{code}[hide]
 module TempVec where
@@ -1295,7 +1295,7 @@ $(x,y)$ where $x : A$ and $y : B\ x$.
 \section{The Curry-Howard correspondence}
 
 
-Now as we said before, Agda is not just a programming language but
+As we said before, Agda is not just a programming language but
 also a proof assistant. This means we can use Agda to formulate
 theorems and prove them, and Agda will check that the proofs are
 correct. However, before we can use Agda as a proof assistant, we
@@ -1481,7 +1481,8 @@ Note that this is simply the identity function $\fun{id}$.
 then ($P$ implies $R$)'' translates to the Agda type $(P \to Q)\
 \prod\ (Q \to R) \to (P \to R)$, which we can prove as follows:
 \begin{code}[number]
-proof2 : {P Q R : Set} → (P → Q) × (Q → R) → (P → R)
+proof2 : {P Q R : Set}
+       → (P → Q) × (Q → R) → (P → R)
 proof2 (f , g) = λ x → g (f x)
 \end{code}
 Note that this is exactly (the uncurried version of) function composition.
