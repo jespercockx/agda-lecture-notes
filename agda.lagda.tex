@@ -597,7 +597,7 @@ has type $\Bool$ and evaluates to $\true$, while
 $\fun{id}\ \Nat\ \zero$ has type $\Nat$ and evaluates to $\zero$.
 
 
-\marginnote[-4cm]{\paragraph{The type of $\ty{}$.} Since all the types we have seen so far have type
+\marginnote{\paragraph{The type of $\ty{}$.} Since all the types we have seen so far have type
 $\ty{}$, and $\ty{}$ itself is also a type, you might be wondering
 whether $\ty{}$ itself also has type $\ty{}$, i.e.~whether we have
 $\ty{} : \ty{}$. The answer is no: there are deep reasons why this is
@@ -671,7 +671,7 @@ snd : {A B : Set} → A × B → B
 snd (x , y) = y
 \end{code}
 
-\marginnote{
+\marginnote[-2cm]{
 \begin{exercise}
 Implement the following Agda functions:
 \begin{itemize}
@@ -758,7 +758,7 @@ Problematic calls:
   bar x
 \end{verbatim}
 
-\marginnote{%
+\marginnote[-5cm]{%
 \paragraph{Limitations of coverage and termination checking.}
 In general, coverage checking and termination checking are undecidable
 problems, so it is impossible to detect all complete
@@ -859,7 +859,7 @@ module TempVec where
   myVec3 = []
 \end{code}
 
-\marginnote{%
+\marginnote[-1cm]{%
 \paragraph{Overloading of constructors.} Agda allows us to use
 the same name for the constructors of different datatypes, for example
 $\nil$ can be a constructor of both $\List$ and $\Vec$.
@@ -944,7 +944,7 @@ module ThrowAwayVec where
   infixr 5 _::_
 \end{code}
 %
-\marginnote[-3cm]{%
+\marginnote{%
 \paragraph{Parameters vs.~indices.}
 You might wonder why the argument $(A : \ty{})$ appears \emph{before}
 the colon in the definition of $\Vec$, while the argument type $\Nat$
@@ -996,7 +996,7 @@ Note that this definition does not include a case for the empty vector
 $\nil$. Yet it is still accepted by the coverage checker of Agda! This
 is a good thing: the empty vector $\nil$ does not have type
 $\Vec\ A\ (\suc\ n)$, so any clause of the form $\fun{head}\ \con{[]} =
-\ldots$ would be ill-typed! By restricting the type of the input, we
+\ldots$ would be ill-typed. By restricting the type of the input, we
 have avoided the need to define a case for $\nil$, while in Haskell we
 would either end up with an incomplete definition or be forced to use
 \texttt{error} or \texttt{undefined}.
@@ -1211,7 +1211,7 @@ $\sigmatype\ \Nat\ (\lambda n \to \Vec\ \Bool \ n)$) contains the
 elements $\lit{2}\ \con{,}\ (\true\ \cons\ \false\ \cons\ \nil)$ and
 $\lit{0}\ \con{,}\ \nil$ but not $\lit{2}\ \con{,}\ \nil$ (since $\nil$ does not
 have type $\Vec\ \Bool\ \lit{2}$). In general, this type consists of pairs
-$m\ \con{,}\ \var{xs}$ where $m : \Nat$ and $\var{xs} : \Vec\ A\ m$.%
+$m\ \con{,}\ \var{xs}$ where $m : \Nat$ and $\var{xs} : \Vec\ \Bool\ m$.%
 \footnote{The dependent pair type is also called the $\Sigma$ type
 because it can be seen as a \emph{sum} (or disjoint union) of all
 the types $B\ x$, where we view the first component as a label indicating
@@ -1413,7 +1413,7 @@ absurd ()
 \end{code}
 (Remember that the absurd pattern $()$ indicates to Agda that there
 are no valid constructors.)
-\marginnote[-4cm]{%
+\marginnote[-6cm]{%
 \paragraph{On empty types.} Note that it is not possible to
 define a real empty type in Haskell: even if we define a type with no
 constructors, it is still inhabited by \texttt{undefined}, as well as
@@ -1423,7 +1423,7 @@ Agda.}
 \end{description}
 
 
-\marginnote[-1cm]{%
+\marginnote[-3cm]{%
 \paragraph{Propositional logic versus boolean logic.} On the
 surface, the two types $\toptype$ and $\bottomtype$ seem to be very
 similar to the booleans $\true$ and $\false$. However, they have a
@@ -1514,8 +1514,6 @@ a function of that type.
 \end{exercise}
 }
 
-
-\marginnote[-8cm]{
 \paragraph{Constructive mathematics.}
 You may already have noticed that certain propositions that are
 typically held to be true cannot be proven when translated to Agda via
@@ -1539,7 +1537,6 @@ translation}: a proposition $P$ is true in classical logic if and only
 if ``not (not $P$)'' is true in constructive logic. So to prove a
 proposition $P$ using classical logic, all we have to do is prove $(P
 \to \bottomtype) \to \bottomtype$ in the constructive logic of Agda.
-}
 
 \marginnote{
 \begin{exercise}
