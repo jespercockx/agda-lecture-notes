@@ -1132,7 +1132,7 @@ module LookupVec1 where
 \end{code}
 \begin{code}[number]
   lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-  lookupVec xs i = {!!}
+  lookupVec (x :: xs) i = {!!}
 \end{code}
 Notice that the length $n$ of the vector is also used as the upper
 bound for the position: this way we enforce that the position really is in
@@ -1142,36 +1142,26 @@ module LookupVec2 where
 \end{code}
 \begin{code}[number]
   lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-  lookupVec []         i = {!!}
-  lookupVec (x :: xs)  i = {!!}
+  lookupVec (x :: xs) i = {!!}
 \end{code}
-So far, so good. Next, we split on the position $i$ in the
-first clause:
-\begin{code}[hide]
-module LookupVec3 where
-\end{code}
-\begin{code}[number]
-  lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-  lookupVec []         ()
-  lookupVec (x :: xs)  i   = {!!}
-\end{code}
-Something interesting has happened: the position has been replaced by
-the special syntax $()$ and the equality sign
-has disappeared. This is Agda's way to indicate that there is no
-element of type $\Fin\ \zero$, i.e.~there is no possible position in a
-vector of length $\lit{0}$. The special pattern $()$ used to indicate this
-is called an \emph{absurd pattern}, and the clause is called an
-\emph{absurd clause}.
+Something interesting has happened: there is only a case for
+$\var{x}\ \cons\ \var{xs}$, but not for $\con{[]}$. Agda has noticed
+based on the type of the $\fun{lookupVec}$ function that the function
+can never be called with argument $\con{[]}$, so the case can safely
+be skipped.\footnote{More precisely, the way Agda figures this out is
+as follows: in order for the input to be $\con{[]}$, the number
+$\var{n}$ has to be $\zero$. But if $\var{n}$ is $\zero$, then
+$\var{i}$ has type $\Fin\ \zero$. Agda then checks all constructors of
+the $\Fin$ type, and sees that none of them can be used to construct
+an element of type $\Fin\ \zero$. Hence the case where the input vector
+is $\con{[]} is really impossible.}
 
-
-Having completed the case for the empty vector $\nil$, we can
-also split on the position $i$ in the second clause:
+We can now split on the position $i$:
 \begin{code}[hide]
 module LookupVec4 where
 \end{code}
 \begin{code}[number]
   lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-  lookupVec []         ()
   lookupVec (x :: xs)  zero     = {!!}
   lookupVec (x :: xs)  (suc i)  = {!!}
 \end{code}
@@ -1182,7 +1172,6 @@ filling in the remaining two holes the same way as we would have done
 for the unsafe lookup function in Haskell.
 \begin{code}[number]
 lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-lookupVec []         ()
 lookupVec (x :: xs)  zero     = x
 lookupVec (x :: xs)  (suc i)  = lookupVec xs i
 \end{code}
@@ -1286,9 +1275,10 @@ omit constructors that can be determined to be impossible based on
 their type. For example, the function $\fun{head}$ takes an argument
 of type $\data{Vec}\ A\ (\suc\ n)$ so it does not require a case for
 the empty vector $\nil$.
-  \item When a type has no possible constructors, we can match on it
-by using an \emph{absurd pattern} $()$ and omitting the right-hand
-side of the clause.
+  \item When a type has no possible constructors, we can (often)
+  safely skip cases that take an argument of this type. For example,
+  we can skip the case for \nil in \fun{lookupVec} since $\Fin\ \zero$
+  is empty.
   \item The dependent pair type $\sigmatype\ A\ B$ consists of pairs
 $(x,y)$ where $x : A$ and $y : B\ x$.
 \end{itemize}
@@ -1412,8 +1402,11 @@ proposition we want. In Agda, we can define $\fun{absurd}$ as follows:
 absurd : {A : Set} → ⊥ → A
 absurd ()
 \end{code}
-(Remember that the absurd pattern $()$ indicates to Agda that there
-are no valid constructors.)
+The special pattern $()$ used to indicate this is called an
+\emph{absurd pattern}, and the clause is called an \emph{absurd
+clause}. Absurd patterns are used to indicate to Agda that there are
+no possible inputs of a given type, but we cannot just skip the clause
+since there would be no other clauses left.
 \marginnote[-6cm]{%
 \paragraph{On empty types.} Note that it is not possible to
 define a real empty type in Haskell: even if we define a type with no
