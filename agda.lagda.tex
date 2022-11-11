@@ -1132,7 +1132,7 @@ module LookupVec1 where
 \end{code}
 \begin{code}[number]
   lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-  lookupVec (x :: xs) i = {!!}
+  lookupVec xs i = {!!}
 \end{code}
 Notice that the length $n$ of the vector is also used as the upper
 bound for the position: this way we enforce that the position really is in
