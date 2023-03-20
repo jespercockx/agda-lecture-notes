@@ -83,6 +83,10 @@
 \newcommand\Bool{\data{Bool}}
 \newcommand\true{\con{true}}
 \newcommand\false{\con{false}}
+\newcommand\just{\con{just}}
+\newcommand\nothing{\con{nothing}}
+\renewcommand\left{\con{left}}
+\renewcommand\right{\con{right}}
 \newcommand\List{\data{List}}
 \renewcommand\Vec{\data{Vec}}
 \newcommand\nil{\con{[]}}
@@ -222,34 +226,30 @@ much easier to get these definitions from the library instead!
 To follow the rest of these notes, it is recommended that you use Agda
 version 2.6.0 or later. There are several ways to install Agda.
 \begin{description}
-  \item[Agda Language Server for VS Code.] The easiest way is to first
-  install Visual Studio
-  Code\footnote{\hrefu{https://code.visualstudio.com/}{code.visualstudio.com}}
-  and the Agda Mode
-  plugin\footnote{https://github.com/banacorn/agda-mode-vscode} and
-  then enable `agdaMode.connection.agdaLanguageServer` in the
-  settings. This will automatically download a suitable version of
-  Agda the first time you load an Agda file.
+  \item[Agda Language Server for VS Code.] The easiest way to install
+    Agda is to first install Visual Studio
+    Code\footnote{\hrefu{https://code.visualstudio.com/}{code.visualstudio.com}}
+    and the Agda Mode
+    plugin\footnote{\hrefu{https://github.com/banacorn/agda-mode-vscode}{github.com/banacorn/agda-mode-vscode}}
+    and then enable `agdaMode.connection.agdaLanguageServer` in the
+    settings. This will automatically download a suitable version of
+    Agda the first time you load an Agda file.
 
-  \item[Ubuntu package.] On Ubuntu Linux and similar systems (including
-  WSL\footnote{\hrefu{https://docs.microsoft.com/en-us/windows/wsl/install-win10}{docs.microsoft.com/en-us/windows/wsl/install-win10}}
-  on Windows) you can install a binary release of Agda by
-  running `\texttt{sudo apt install agda-mode}`.
+  \item[Ubuntu package.] On Ubuntu Linux and similar systems
+    (including
+    WSL\footnote{\hrefu{https://docs.microsoft.com/en-us/windows/wsl/install-win10}{docs.microsoft.com/en-us/windows/wsl/install-win10}}
+    on Windows) you can install a binary release of Agda by running
+    `\texttt{sudo apt install agda-mode}`.
 
-  \item[Installation from source using Stack.] It is also possible to
-  install Agda from source using Stack.\footnote{Instructions for
-  installing Stack can be found on
-  \hrefu{https://docs.haskellstack.org/en/stable/README/}{docs.haskellstack.org/en/stable/README}.}
-  The following command should install the latest release of Agda:
-  \begin{verbatim}
-  stack install Agda
-  \end{verbatim}
-  This step will take a long time and a lot of memory to complete, and
-  use up 4-5 GB of disk space for a fresh install.
+  \item[Installation from source using Cabal or Stack.] You can also
+    install Agda from source using Cabal or Stack.\footnote{These
+    tools can be installed using GHCup, which you can find at
+    \hrefu{https://www.haskell.org/ghcup/}{haskell.org/ghcup}.}  You
+    can compile and install Agda by running \texttt{cabal install
+      Agda} if using Cabal, or \texttt{stack install Agda} if using
+    Stack.  This step will take a long time and a lot of memory to
+    complete, and use up 4-5 GB of disk space for a fresh install.
 \end{description}
-
-Other ways to install Agda can be found at
-\hrefu{https://agda.readthedocs.io/en/latest/getting-started/installation.html}{agda.readthedocs.io/en/latest/getting-started/installation.html}.
 
 To write and edit Agda code, we recommend Visual Studio Code with the
 \texttt{agda-mode} extension.\footnote{You can get Visual Studio Code
@@ -278,7 +278,7 @@ for Haskell. Agda also supports several backends for compilation,
 including a GHC backend and a JavaScript backend. A full ``Hello,
 world'' example for creating an executable from your Agda code can be
 found at
-\hrefu{https://agda.readthedocs.io/en/v2.6.1.3/getting-started/hello-world.html}{agda.readthedocs.io/en/v2.6.1.3/getting-started/hello-world.html}.}
+\hrefu{https://agda.readthedocs.io/en/v2.6.3/getting-started/hello-world.html}{agda.readthedocs.io/en/v2.6.3/getting-started/hello-world.html}.}
 
 Once you have loaded an Agda file, there is a number of other commands that
 can be used to query the typechecker. Here are two that are used very often:
@@ -311,26 +311,29 @@ of writing \texttt{b ::~Bool} as in Haskell, in Agda we write $\fun{b} : \Bool$
 to indicate that \fun{b} is a boolean.
 
 \item[Unicode] Agda allows optional use of unicode symbols in
-code. For example, we can write $\Bool \to \Bool$ instead of
-\texttt{Bool -> Bool} and $\lambda\ x \to x$ instead of
-\texttt{\textbackslash x -> x}. It is also allowed to use unicode
-symbols in names of definitions and variables. For example, we can
-define a function that is named $\surd$.\footnote[][-2cm]{Many unicode
-characters can be entered easily using LaTeX syntax when using the
-Agda mode for VS Code. For example, when you type
-\texttt{\textbackslash{}to} it will be replaced by $\to$, and
-\texttt{\textbackslash{}lambda} is replaced by $\lambda$.}
+  code. For example, we can write $\Bool \to \Bool$ instead of
+  \texttt{Bool -> Bool} and $\lambda\ x \to x$ instead of
+  \texttt{\textbackslash x -> x}. It is also allowed to use unicode
+  symbols in names of definitions and variables. For example, we can
+  define a function that is named $\surd$.\footnote[][-2cm]{Many
+    unicode characters can be entered easily using LaTeX syntax when
+    using the Agda mode for VS Code. For example, when you type
+    \texttt{\textbackslash{}to} it will be replaced by $\to$, and
+    \texttt{\textbackslash{}lambda} is replaced by $\lambda$. A full
+    list of the unicode characters used in these lecture notes and how
+    to input them can be found in the appendix.}
 
-\item[Naming] In Agda there is no syntactic difference between an expression
-and a type. As a consequence, there are no restrictions on what names have
-to start with a small letter or a capital letter. In addition, almost
-all ascii and unicode characters\footnote{The exceptions are the
-symbols \texttt{.;\{\}()\@"}.} can be used as part of a name. As a
-convention, names of functions, constructors, and variables usually
-start with a small letter, while names of both type constructors and
-type variables usually start with a capital letter. While this naming
-convention is not enforced by the language, we will keep to it in
-these notes.
+\item[Naming] In Agda there is no syntactic difference between an
+  expression and a type. As a consequence, there are no restrictions
+  on what names have to start with a small letter or a capital
+  letter. In addition, almost all ascii and unicode
+  characters\footnote{The exceptions are the symbols
+  \texttt{.;\{\}()\@"}.} can be used as part of a name. As a
+  convention, names of functions, constructors, and variables in Agda
+  code usually start with a small letter, while names of both type
+  constructors and type variables usually start with a capital
+  letter. While this naming convention is not enforced by the
+  language, we will keep to it in these notes.
 
 \item[Operators] To refer to the name of an operator such as $+$ in isolation,
 Agda uses underscores (as opposed to parentheses in Haskell). For example, we
@@ -349,14 +352,14 @@ for a function or variable!
 \item[Lists] Unlike Haskell, Agda does not assign a special role to lists
 compared to other data structures. In particular, there is no special syntax
 for list literals or list comprehensions in Agda. Instead, the type
-$\data{List}\ A$ is simply a datatype defined with two constructors $\con{[]}$
-and $\con{\_::\_}$. The Haskell list \texttt{[1,2,3]} can then be written in
-Agda as $\lit{1}\ \con{::}\ \lit{2}\ \con{::}\ \lit{3}\ \con{::}\ \con{[]}$.
+$\data{List}\ A$ is simply a datatype defined with two constructors $\nil$
+and $\cons$. The Haskell list \texttt{[1,2,3]} can then be written in
+Agda as $\lit{1}\ \cons\ \lit{2}\ \cons\ \lit{3}\ \cons\ \nil$.
 
-\item[Tuples] Similarly, Agda does not have a special built-in type of tuples.
-Instead, the type $A\ \data{×}\ B$ is defined as a datatype with one
-constructor $\con{\_,\_}$. For example, we have $\lit{6}\ \con{,}\ \con{true} : \Nat\
-\data{×}\ \Bool$.
+\item[Tuples] Similarly, Agda does not have a special built-in type of
+tuples.  Instead, the type $A\ \data{×}\ B$ is defined as a datatype
+with one constructor $\con{\_,\_}$. For example, we have $(\lit{6}\
+\con{,}\ \true) : \Nat\ \data{×}\ \Bool$.
 
 %\item[Type classes] Agda does not have type classes as in Haskell. Instead, it
 %has a feature known as \emph{instance arguments} that can be used for a similar
@@ -437,11 +440,8 @@ To test our definition, we first load the file in VS Code
 (\texttt{Ctrl+c Ctrl+l}) and then ask Agda to evaluate an expression
 by pressing \texttt{Ctrl+c Ctrl+n} (for ``normalize expression'').  A
 prompt will appear where you can enter the term to be evaluated. For
-example, if you enter \texttt{(suc zero) + (suc zero)} you should get
-back the response \texttt{suc (suc zero)}.\footnote{Agda also has
-built-in support for writing numerals \lit{0}, \lit{1}, \lit{2}\ldots
-instead of \con{zero}, (\con{suc} \con{zero}), (\con{suc} (\con{suc}
-\con{zero}))\ldots This can be activated with the pragma \texttt{\{-\# BUILTIN NATURAL Nat \#-\}}.}
+example, if you enter \texttt{1 + 1} you should get
+back the response \texttt{2}.
 
 
 \marginnote{
@@ -454,7 +454,7 @@ of two natural numbers.
 \marginnote{
 \begin{exercise}
 Define the type $\data{Bool}$ with constructors
-$\con{true}$ and $\con{false}$, and define the functions for negation
+$\true$ and $\false$, and define the functions for negation
 $\fun{not} : \Bool → \Bool$, conjunction $\fun{\_\&\&\_} : \Bool → \Bool → \Bool$,
 and disjunction $\fun{\_\textbar\textbar\_} : \Bool → \Bool → \Bool$ by pattern matching.
 \end{exercise}
@@ -481,7 +481,7 @@ module ThrowAway1 where
 \end{code}
 \begin{code}[number]
   not : Bool → Bool
-  not b = {!!}
+  not b = {!  !}
 \end{code}
 Agda can load a file even if it still contains holes. If you load the
 file (with \texttt{Ctrl+c Ctrl+l}), Agda will assign a number to the holes and give you
@@ -514,8 +514,8 @@ module ThrowAway2 where
 \end{code}
 \begin{code}[number]
   not : Bool → Bool
-  not true   = {!!}
-  not false  = {!!}
+  not true   = {!  !}
+  not false  = {!  !}
 \end{code}
   Alternatively, you can first enter the name of a variable in
   the hole (between the \texttt{\{!} and \texttt{!\}} signs)
@@ -524,7 +524,7 @@ module ThrowAway2 where
   you to enter an expression into a hole. For example, if you put
   our cursor in the first hole in the definition of \fun{not}
   and press \texttt{Ctrl+c Ctrl+space}, Agda will prompt us
-  for an expression to give. You can then enter \con{false} in
+  for an expression to give. You can then enter $\false$ in
   the prompt and press \texttt{enter}. Agda will check that the
   expression is of the right type (in this case \data{Bool}) and
   then (if typechecking is successful) replace the hole with the given
@@ -535,9 +535,9 @@ module ThrowAway3 where
 \begin{code}[number]
   not  : Bool → Bool
   not  true   = false
-  not  false  = {!!}
+  not  false  = {!  !}
 \end{code}
-  By doing the same with the term \texttt{true} in the second hole,
+  By doing the same with the term $\true$ in the second hole,
   the definition of $\fun{not}$ is completed.
 \begin{code}[hide]
 not  : Bool → Bool
@@ -597,7 +597,7 @@ has type $\Bool$ and evaluates to $\true$, while
 $\fun{id}\ \Nat\ \zero$ has type $\Nat$ and evaluates to $\zero$.
 
 
-\marginnote{\paragraph{The type of $\ty{}$.} Since all the types we have seen so far have type
+\marginnote[-4cm]{\paragraph{The type of $\ty{}$.} Since all the types we have seen so far have type
 $\ty{}$, and $\ty{}$ itself is also a type, you might be wondering
 whether $\ty{}$ itself also has type $\ty{}$, i.e.~whether we have
 $\ty{} : \ty{}$. The answer is no: there are deep reasons why this is
@@ -697,12 +697,23 @@ map f (x :: xs)  = f x :: map f xs
 \marginnote{
 \begin{exercise}
 Implement the type $\data{Maybe}\ A$ with two
-constructors $\con{just} : A \to \data{Maybe}\ A$ and $\con{nothing} :
+constructors $\just : A \to \data{Maybe}\ A$ and $\nothing :
 \data{Maybe}\ A$. Next, implement the function $\fun{lookup} : \{ A :
 \ty{} \} \to \List\ A \to \Nat \to \data{Maybe}\ A$ that returns the
 element at the given position in the list.
 \end{exercise}
 }
+\begin{code}[hide]
+data Maybe (A : Set) : Set where
+  just    : A → Maybe A
+  nothing : Maybe A
+
+lookup : {A : Set} → List A → Nat → Maybe A
+lookup []        n       = nothing
+lookup (x :: xs) zero    = just x
+lookup (x :: xs) (suc n) = lookup xs n
+\end{code}
+
 
 
 \subsection{Totality checking}
@@ -738,7 +749,7 @@ foo false = true
 Then Agda highlights the definition and gives us an error:
 \begin{verbatim}
 Incomplete pattern matching for foo. Missing cases:
-  foo false
+  foo False
 when checking the definition of foo
 \end{verbatim}
 
@@ -995,7 +1006,7 @@ head (x :: xs) = x
 Note that this definition does not include a case for the empty vector
 $\nil$. Yet it is still accepted by the coverage checker of Agda! This
 is a good thing: the empty vector $\nil$ does not have type
-$\Vec\ A\ (\suc\ n)$, so any clause of the form $\fun{head}\ \con{[]} =
+$\Vec\ A\ (\suc\ n)$, so any clause of the form $\fun{head}\ \nil =
 \ldots$ would be ill-typed. By restricting the type of the input, we
 have avoided the need to define a case for $\nil$, while in Haskell we
 would either end up with an incomplete definition or be forced to use
@@ -1028,7 +1039,7 @@ with the concept of an index for an indexed datatype.} is too big (or
 negative) the function will throw an error. Since throwing errors is
 not allowed in Agda, we are forced to give it the type
 $\{A : \ty{}\} \to \List\ A \to \Nat \to \data{Maybe}\ A$, and return
-$\con{nothing}$ in case the position is out of range. However, we can do
+$\nothing$ in case the position is out of range. However, we can do
 better by using $\Vec$ instead of $\List$ and requiring the position to
 be in range of the vector. To make this work, we introduce a new type
 $\Fin\ n$ of \emph{finite sets}. This type consists of all natural
@@ -1074,7 +1085,7 @@ data Fin : Nat → Set where
   zero  : {n : Nat} → Fin (suc n)
   suc   : {n : Nat} → Fin n → Fin (suc n)
 \end{code}
-The constructor \con{zero} constructs
+The constructor \zero constructs
 an element of type $\data{Fin}~(\suc\ n)$ for any $n$,
 while $\suc$ constructs a new element of type $\data{Fin}\
 (\suc\ n)$ for each element of type $\data{Fin}\ n$.
@@ -1142,19 +1153,19 @@ module LookupVec2 where
 \end{code}
 \begin{code}[number]
   lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-  lookupVec (x :: xs) i = {!!}
+  lookupVec (x :: xs) i = {!  !}
 \end{code}
 Something interesting has happened: there is only a case for
-$\var{x}\ \cons\ \var{xs}$, but not for $\con{[]}$. Agda has noticed
+$\var{x}\ \cons\ \var{xs}$, but not for $\nil$. Agda has noticed
 based on the type of the $\fun{lookupVec}$ function that the function
-can never be called with argument $\con{[]}$, so the case can safely
+can never be called with argument $\nil$, so the case can safely
 be skipped.\footnote{More precisely, the way Agda figures this out is
-as follows: in order for the input to be $\con{[]}$, the number
+as follows: in order for the input to be $\nil$, the number
 $\var{n}$ has to be $\zero$. But if $\var{n}$ is $\zero$, then
 $\var{i}$ has type $\Fin\ \zero$. Agda then checks all constructors of
 the $\Fin$ type, and sees that none of them can be used to construct
 an element of type $\Fin\ \zero$. Hence the case where the input vector
-is $\con{[]}$ is really impossible.}
+is $\nil$ is really impossible.}
 
 We can now split on the position $i$:
 \begin{code}[hide]
@@ -1162,8 +1173,8 @@ module LookupVec4 where
 \end{code}
 \begin{code}[number]
   lookupVec : {A : Set} {n : Nat} → Vec A n → Fin n → A
-  lookupVec (x :: xs)  zero     = {!!}
-  lookupVec (x :: xs)  (suc i)  = {!!}
+  lookupVec (x :: xs)  zero     = {!  !}
+  lookupVec (x :: xs)  (suc i)  = {!  !}
 \end{code}
 Since the length of the vector $x\ \cons\ \var{xs}$ is $\suc\ n$,
 we get cases for both constructors of $\Fin$.
@@ -1338,8 +1349,8 @@ correspondence, ``$P$ implies $Q$ corresponds to the function type $P
 \item[Disjunction.] What type corresponds to the proposition ``$P$ or
 $Q$''? In order to prove it, we need to either provide a proof $p$ of
 $P$ or a proof $q$ of $Q$. To avoid confusion between whether we
-proved $P$ or $Q$, we can label the proofs as either $\con{left}\ p$
-or $\con{right}\ q$. Using a proof of ``$P$ or $Q$'' is a bit less
+proved $P$ or $Q$, we can label the proofs as either $\left\ p$
+or $\right\ q$. Using a proof of ``$P$ or $Q$'' is a bit less
 straightforward. If we know that $P$ holds or $Q$ holds and we want to
 prove $R$, then we need to show two things: (1) that $P$ implies $R$,
 and (2) that $Q$ implies $R$. We can summarize this proof of $R$ as
@@ -1560,15 +1571,15 @@ new data types. For example, we can define a type $\fun{IsEven}\ n$ that
 expresses whether $n$ is even by pattern matching on $n$:
 \begin{code}[number]
 data IsEven : Nat → Set where
-  even-zero : IsEven zero
-  even-suc2 : {n : Nat} → IsEven n → IsEven (suc (suc n))
+  zeroIsEven : IsEven zero
+  sucsucIsEven : {n : Nat} → IsEven n → IsEven (suc (suc n))
 \end{code}
 Note that $\data{IsEven}$ is an \emph{indexed datatype}, just like
 $\data{Vec}$ and $\data{Fin}$ We can then easily prove that $\lit{6}$ is
 even:
 \begin{code}[number]
 6-is-even : IsEven 6
-6-is-even = even-suc2 (even-suc2 (even-suc2 even-zero))
+6-is-even = sucsucIsEven (sucsucIsEven (sucsucIsEven zeroIsEven))
 \end{code}
 On the other hand, there is no way to prove that $\lit{7}$ is even:
 $\data{IsEven}\ \lit{7}$ is an empty type. In fact, we can prove that
@@ -1576,7 +1587,7 @@ $\data{IsEven}\ \lit{7}$ is false by defining a function from this type to
 $\bottomtype$:
 \begin{code}[number]
 7-is-not-even : IsEven 7 → ⊥
-7-is-not-even (even-suc2 (even-suc2 (even-suc2 ())))
+7-is-not-even (sucsucIsEven (sucsucIsEven (sucsucIsEven ())))
 \end{code}
 Here we have to case split four times (using \texttt{Ctrl+c Ctrl+c})
 before Agda can see that there is indeed no proof of
@@ -1587,7 +1598,7 @@ One predicate that is often quite useful is the predicate stating that
 a given $\Bool$ is $\true$. It can be defined as follows:
 \begin{code}[number]
 data IsTrue : Bool → Set where
-  is-true : IsTrue true
+  TrueIsTrue : IsTrue true
 \end{code}
 \marginnote{
 \paragraph{Defining properties as functions.}
@@ -1596,9 +1607,9 @@ Agda data types. An alternative approach is to define new properties
 as \emph{functions} that return a value of type $\ty{}$. For example,
 an alternative definition of $\data{IsTrue}$ could be given as:
 \begin{code}[number]
-IsTrue' : Bool → Set
-IsTrue' true   = ⊤
-IsTrue' false  = ⊥
+isTrue : Bool → Set
+isTrue true   = ⊤
+isTrue false  = ⊥
 \end{code}
 This approach often results in proofs that are shorter, but less readable.  It
 is also less general, as some types (such as the identity type which
@@ -1607,7 +1618,7 @@ type. Hence we prefer the approach using data types over the one using
 functions.
 }
 The type $\data{IsTrue}\ b$ has exactly one constructor if and only if
-$b$ is $\true$, and it is empty if $b$ is false. By using this type in
+$b$ is $\true$, and it is empty if $b$ is $\false$. By using this type in
 conjunction with a function that returns a boolean, we can easily
 express many properties. For example, we can define the function
 $\fun{\_=Nat\_}$ that checks equality of two numbers,\footnote{Note that
@@ -1623,7 +1634,7 @@ zero     =Nat  zero     = true
 _        =Nat  _        = false
 
 length-is-3 : IsTrue (length (1 :: 2 :: 3 :: []) =Nat 3)
-length-is-3 = is-true
+length-is-3 = TrueIsTrue
 \end{code}
 
 
@@ -1691,8 +1702,8 @@ double zero     = zero
 double (suc n)  = suc (suc (double n))
 
 double-is-even : (n : Nat) → IsEven (double n)
-double-is-even zero     = even-zero
-double-is-even (suc m)  = even-suc2 (double-is-even m)
+double-is-even zero     = zeroIsEven
+double-is-even (suc m)  = sucsucIsEven (double-is-even m)
 \end{code}
 Let's take a closer look at the implementation of
 $\fun{double-is-even}$. It makes use of two features we've used
@@ -1724,7 +1735,7 @@ As another example, we can prove that for any number $n$, $n\
 \fun{=Nat}\ n$ is $\true$:
 \begin{code}[number]
 n-equals-n : (n : Nat) → IsTrue (n =Nat n)
-n-equals-n zero     = is-true
+n-equals-n zero     = TrueIsTrue
 n-equals-n (suc m)  = n-equals-n m
 \end{code}
 
@@ -1734,7 +1745,7 @@ number $n$ such that $n\ \fun{+}\ n = \lit{12}$ by exhibiting the number
 $\lit{6}$:
 \begin{code}[number]
 half-a-dozen : Σ Nat (λ n → IsTrue ((n + n) =Nat 12))
-half-a-dozen = 6 , is-true
+half-a-dozen = 6 , TrueIsTrue
 \end{code}
 
 
@@ -1744,7 +1755,7 @@ the successor of another number $m$:
 zero-or-suc : (n : Nat)
   → Either (IsTrue (n =Nat 0))
            (Σ Nat (λ m → IsTrue (n =Nat (suc m))))
-zero-or-suc zero     = left is-true
+zero-or-suc zero     = left TrueIsTrue
 zero-or-suc (suc m)  = right (m , n-equals-n m)
 \end{code}
 
@@ -1880,10 +1891,11 @@ quantification $\exists (x\in A).~P(x)$ corresponds to the dependent
 pair type $\sigmatype\ A\ (\lambda x → P\ x)$.
 \item The identity type $x~\data{≡}~y$ represents the proposition that
 $x$ and $y$ are equal. It is defined as an indexed datatype with a
-single constructor $\con{refl} : x~\data{≡}~x$. Other properties of
+single constructor $\refl : x~\data{≡}~x$. Other properties of
 equality such as symmetry, transitivity, and congruence can be proven
 by pattern matching on $\refl$.
 \end{itemize}
+
 
 \section{Equational reasoning in Agda}
 
@@ -2668,7 +2680,7 @@ flatten-acc-flatten (node l r) xs =
   end
 
 flatten'-flatten : {A : Set} → (t : Tree A) → flatten' t ≡ flatten t
-flatten'-flatten t = {!!}
+flatten'-flatten t = {!  !}
 \end{code}
 \end{AgdaAlign}\end{fullwidth}
 \marginnote{
@@ -2834,6 +2846,54 @@ functional programs. In particular, we can use it to prove typeclass
 laws for specific instances, to verify the correcness of
 optimizations, and to prove compiler correctness.
 \end{itemize}
+
+
+%\section{Lawful type classes}
+%
+%\subsection{Getting our feet wet with \fun{Monoid}}
+%
+%\begin{code}
+%record RawSemigroup (A : Set) : Set where
+%  field
+%    _<>_ : A → A → A
+%\end{code}
+%
+%\begin{code}
+%open RawSemigroup {{...}}
+%\end{code}
+%
+%\begin{code}
+%instance
+%  rawSemigroupList : {A : Set} → RawSemigroup (List A)
+%  rawSemigroupList = record { _<>_ = _++_ }
+%
+%instance
+%  rawSemigroupMaybe : {A : Set} → RawSemigroup (Maybe A)
+%  rawSemigroupMaybe = record { _<>_ = λ x y → x }
+%\end{code}
+%
+%
+%
+%\begin{code}
+%record Semigroup (A : Set) : Set where
+%  field
+%    _<>_  : A → A → A
+%    assoc : (x y z : A) → (x <> y) <> z ≡ x <> (y <> z)
+%\end{code}
+%
+%\begin{code}
+%open Semigroup {{...}}
+%\end{code}
+%
+%\begin{code}
+%instance
+%  semigroupList : {A : Set} → Semigroup (List A)
+%  semigroupList = record { _<>_ = _++_ ; assoc = append-assoc }
+%
+%instance
+%  semigroupMaybe : {A : Set} → Semigroup (Maybe A)
+%  semigroupMaybe {A} = record { _<>_ = λ x y → x ; assoc = λ x y z → refl }
+%\end{code}
 
 
 \appendix
