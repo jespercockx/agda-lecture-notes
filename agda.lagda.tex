@@ -779,7 +779,7 @@ all complete and terminating functions. So it could
 happen that you write down a complicated function that is complete and
 terminating, yet Agda still throws an error. If that happens, you will
 have to write the function in a different way to make it obvious to Agda
-that the function is really total. A good rule of thumb is to include
+that the function is really total. A good rule of thumb is to
 use \texttt{Ctrl+c Ctrl+c} to make sure you have cases for all constructors,
 and to only make recursive calls on arguments that are \emph{structurally decreasing},
 i.e.~that are a subterm of the pattern on the left-hand side of the clause.
@@ -1074,7 +1074,7 @@ define $\suc\ (\suc\ (\suc\ \zero))$ as an element of $\Fin\ \lit{3}$.
 
 The type $\Fin\ \lit{0}$ in particular
 contains \emph{zero} arguments: it is an \emph{empty type}.
-This makes sense as we want to use $\Fin\ n$ as an position
+This makes sense as we want to use $\Fin\ n$ as a position
 in a vector of length $n$, and there are no valid positions
 in a vector of length $\lit{0}$. Empty types will take an important role once
 we start using Agda as a proof assistant in the next section.
@@ -1085,7 +1085,7 @@ data Fin : Nat → Set where
   zero  : {n : Nat} → Fin (suc n)
   suc   : {n : Nat} → Fin n → Fin (suc n)
 \end{code}
-The constructor \zero constructs
+The constructor $\zero$ constructs
 an element of type $\data{Fin}~(\suc\ n)$ for any $n$,
 while $\suc$ constructs a new element of type $\data{Fin}\
 (\suc\ n)$ for each element of type $\data{Fin}\ n$.
@@ -1337,7 +1337,7 @@ proof $\fun{snd}\ r$ of $Q$. So under the Curry-Howard correspondence,
 
 \item[Implication.] As a second example, let's look at the proposition
 ``$P$ implies $Q$''. In order to prove this implication, we may assume
-that we have a proof $x$ of $P$ holds and from that we need to
+that we have a proof $x$ that $P$ holds and from that we need to
 construct a proof $q$ of $Q$. In other words, a proof of ``$P$ implies
 $Q$'' is a \emph{function} $\lambda\ x \to q$ that transforms a proof
 of $P$ into a proof of $Q$. In addition, if we have both a proof $f$
@@ -2521,7 +2521,7 @@ $\fun{\_++\_}$ is very inefficient: it needs to traverse the whole
 list for each application of $\fun{\_++\_}$, resulting in quadratic
 complexity overall. A more efficient implementation of this function
 uses a helper function with an extra argument called an
-\emph{accumulator} to store pass around the intermediate results.
+\emph{accumulator} to pass around the intermediate results.
 \begin{AgdaAlign}
 \begin{AgdaSuppressSpace}
 \begin{code}[number]
