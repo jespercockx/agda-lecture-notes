@@ -954,7 +954,7 @@ module ThrowAwayVec where
     _::_  : {n : Nat} → A → Vec A n → Vec A (suc n)
   infixr 5 _::_
 \end{code}
-%
+% FIXME the last line of the following marginnote gets cut off in the PDF
 \marginnote{%
 \paragraph{Parameters vs.~indices.}
 You might wonder why the argument $(A : \ty{})$ appears \emph{before}
@@ -1761,6 +1761,7 @@ zero-or-suc (suc m)  = right (m , n-equals-n m)
 
 \subsection{The identity type}
 
+% FIXME no we did not prove that
 In the previous section, we proved that \texttt{length (xs ++ ys)} is
 equal to \texttt{length xs + length ys} by making use of the function
 $\fun{\_=Nat\_}$ together with the predicate $\fun{IsTrue}$. This
