@@ -2364,8 +2364,8 @@ syntax} $x\ \cons\_$; this is equivalent to $\lambda\ \var{xs} \to x\
 
 For the second law, we first need to define function composition. The
 symbol $.$ is not a valid function name, but we can instead use the
-symbol $∘$.\footnote{Unicode input for $\circ$ is
-\texttt{\textbackslash{}o}}
+symbol $∘$.\footnote{Unicode input for $∘$ is
+\texttt{\textbackslash{}buw}}
 \begin{code}[number]
 _∘_ : {A B C : Set} → (B → C) → (A → B) → (A → C)
 g ∘ h = λ x → g (h x)
