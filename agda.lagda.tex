@@ -1085,7 +1085,7 @@ data Fin : Nat → Set where
   zero  : {n : Nat} → Fin (suc n)
   suc   : {n : Nat} → Fin n → Fin (suc n)
 \end{code}
-The constructor \zero constructs
+The constructor \zero\ constructs
 an element of type $\data{Fin}~(\suc\ n)$ for any $n$,
 while $\suc$ constructs a new element of type $\data{Fin}\
 (\suc\ n)$ for each element of type $\data{Fin}\ n$.
