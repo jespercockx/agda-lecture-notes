@@ -7,7 +7,7 @@ default: agda.pdf
 	latexmk --pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make $<
 
 latex/%.tex : %.lagda.tex
-	agda-2.6.3 --latex $<
+	agda-2.6.5 --latex $<
 
 clean:
 	rm -f *.aux *.log *.out *.ptb *.blg *.fdb_latexmk *.agdai *.fls *.toc *~
