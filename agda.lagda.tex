@@ -902,7 +902,7 @@ so the output must have type $\Vec\ \Nat\ (\suc\ n)$.
   Implement the function
   $\fun{downFrom} : (n : \Nat) \to \Vec\ \Nat\ n$ that, given a number
   $n$, produces the vector
-  $(n-1)\ \cons\ (n-2)\ \cons\ \ldots\ \cons\ \lit{0}$. (You'll need to copy
+  $(n-1)\ \cons\ (n-2)\ \cons\ \ldots\ \cons\ \lit{0} \cons\ \nil$. (You'll need to copy
   the definition of the $\Vec$ type below to test if your definition
   typechecks.)
 \end{exercise}
@@ -1343,7 +1343,7 @@ $Q$'' is a \emph{function} $\lambda\ x \to q$ that transforms a proof
 of $P$ into a proof of $Q$. In addition, if we have both a proof $f$
 of ``$P$ implies $Q$'' and a proof $p$ of $P$, then we can combine the
 two proofs to get a new proof $f\ p$ of $Q$. So under the Curry-Howard
-correspondence, ``$P$ implies $Q$ corresponds to the function type $P
+correspondence, ``$P$ implies $Q$'' corresponds to the function type $P
 \to Q$.
 
 \item[Disjunction.] What type corresponds to the proposition ``$P$ or
