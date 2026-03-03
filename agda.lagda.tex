@@ -9,7 +9,7 @@
 \usepackage{agda}
 \usepackage{geometry}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, filecolor=black, urlcolor=black}
+\hypersetup{colorlinks=true}
 \usepackage[parfill]{parskip}
 \usepackage{color,colortbl,xcolor}
 \usepackage{booktabs}
@@ -224,22 +224,23 @@ much easier to get these definitions from the library instead!
 \subsection{Installing Agda}
 
 To follow the rest of these notes, it is recommended that you use Agda
-version 2.6.0 or later. There are several ways to install Agda.
+version 2.6.0 or later (the latest version at the time of writing is 2.8.0). There are several ways to install Agda.
 \begin{description}
-  \item[Agda Language Server for VS Code.] The easiest way to install
-    Agda is to first install Visual Studio
-    Code\footnote{\hrefu{https://code.visualstudio.com/}{code.visualstudio.com}}
-    and the Agda Mode
-    plugin\footnote{\hrefu{https://github.com/banacorn/agda-mode-vscode}{github.com/banacorn/agda-mode-vscode}}
-    and then enable `agdaMode.connection.agdaLanguageServer` in the
-    settings. This will automatically download a suitable version of
-    Agda the first time you load an Agda file.
+  \item[Download a precompiled binary.] You can download an Agda binary from \hrefu{https://github.com/agda/agda/releases}{github.com/agda/agda/releases} for the following systems:
+    \begin{description}
+      \item[Linux] \hrefu{https://github.com/agda/agda/releases/download/v2.8.0/Agda-v2.8.0-linux.tar.xz}{Agda-v2.8.0-linux.tar.xz}
+      \item[MacOS (ARM)] \hrefu{https://github.com/agda/agda/releases/download/v2.8.0/Agda-v2.8.0-macOS-arm64.tar.xz}{Agda-v2.8.0-macOS-arm64.tar.xz}
+      \item[MacOS (x64)] \hrefu{https://github.com/agda/agda/releases/download/v2.8.0/Agda-v2.8.0-macOS-x64.tar.xz}{Agda-v2.8.0-macOS-x64.tar.xz}
+      \item[Windows] \href{https://github.com/agda/agda/releases/download/v2.8.0/Agda-v2.8.0-win64.zip}{Agda-v2.8.0-win64.zip}
+    \end{description}
+    Unpack the binary to a directory on your system path (e.g. `\texttt{/usr/bin}' on Linux and MacOS or `\texttt{C:\textbackslash{}Windows\textbackslash{}system32}' on Windows).
+    Before the first usage, you need to run `\texttt{agda setup}' once from a terminal.
 
   \item[Ubuntu package.] On Ubuntu Linux and similar systems
     (including
-    WSL\footnote{\hrefu{https://docs.microsoft.com/en-us/windows/wsl/install-win10}{docs.microsoft.com/en-us/windows/wsl/install-win10}}
+    WSL\footnote{\hrefu{https://learn.microsoft.com/en-us/windows/wsl/install}{learn.microsoft.com/en-us/windows/wsl/install}}
     on Windows) you can install a binary release of Agda by running
-    `\texttt{sudo apt install agda}` (plus `sudo apt install elpa-agda2-mode` if you use Emacs).
+    `\texttt{sudo apt install agda}'.
 
   \item[Installation from source using Cabal or Stack.] You can also
     install Agda from source using Cabal or Stack.\footnote{These
@@ -255,8 +256,9 @@ To write and edit Agda code, we recommend Visual Studio Code with the
 \texttt{agda-mode} extension.\footnote{You can get Visual Studio Code
 from \hrefu{https://code.visualstudio.com/}{code.visualstudio.com}. To install an extension,
 click the Extensions button on the left, enter the name of the
-extension, and click `install'.} Other IDEs with support for Agda are
-Emacs and Atom.
+extension, and click `install'.}
+Other IDEs with support for Agda are
+Emacs, Neovim, and Vim.
 
 You can test to see if you've installed Agda correctly by creating a file
 called \texttt{hello.agda} with these lines:
@@ -279,6 +281,15 @@ including a GHC backend and a JavaScript backend. A full ``Hello,
 world'' example for creating an executable from your Agda code can be
 found at
 \hrefu{https://agda.readthedocs.io/en/v2.6.3/getting-started/hello-world.html}{agda.readthedocs.io/en/v2.6.3/getting-started/hello-world.html}.}
+
+\textbf{Troubleshooting.}
+If loading the file does not work, you might have to change the
+configuration of the extension.
+\begin{itemize}
+\item \texttt{Connection: Agda version}: set this to the name of the Agda executable (usually just \texttt{agda}).
+\item \texttt{Connection: Paths}: set this to the full path of the Agda executable (e.g. \texttt{/usr/bin/agda} or \texttt{C:\textbackslash{}Windows\textbackslash{}system32\textbackslash{}agda}).
+\item \texttt{Connection: Download Policy}: set this to `No, and don't ask again'.
+\end{itemize}
 
 Once you have loaded an Agda file, there is a number of other commands that
 can be used to query the typechecker. Here are two that are used very often:
@@ -779,7 +790,7 @@ all complete and terminating functions. So it could
 happen that you write down a complicated function that is complete and
 terminating, yet Agda still throws an error. If that happens, you will
 have to write the function in a different way to make it obvious to Agda
-that the function is really total. A good rule of thumb is to 
+that the function is really total. A good rule of thumb is to
 use \texttt{Ctrl+c Ctrl+c} to make sure you have cases for all constructors,
 and to only make recursive calls on arguments that are \emph{structurally decreasing},
 i.e.~that are a subterm of the pattern on the left-hand side of the clause.
@@ -1761,7 +1772,7 @@ zero-or-suc (suc m)  = right (m , n-equals-n m)
 
 \subsection{The identity type}
 
-In the previous section, we showed how to prove that two natural 
+In the previous section, we showed how to prove that two natural
 numbers are equal by making use of the function
 $\fun{\_=Nat\_}$ together with the predicate $\fun{IsTrue}$. This
 method works for concrete types such as natural numbers, but it has a
