@@ -395,7 +395,7 @@ data Nat : Set where
   zero  : Nat
   suc   : Nat → Nat
 \end{code}
-\marginnote[-4cm]{%
+\marginnote{%
 \paragraph{Natural number literals.} By default, this definition of natural numbers
 forces us to write out the numbers as $\zero$, $\suc\ \zero$,
 $\suc\ (\suc\ \zero)$, \ldots. However, Agda also has built-in support
@@ -780,7 +780,7 @@ Problematic calls:
   bar x
 \end{verbatim}
 
-\marginnote[-5cm]{%
+\marginnote{%
 \paragraph{Limitations of coverage and termination checking.}
 In general, coverage checking and termination checking are undecidable
 problems, so it is impossible to detect all complete
@@ -1429,7 +1429,7 @@ The special pattern $()$ used to indicate this is called an
 clause}. Absurd patterns are used to indicate to Agda that there are
 no possible inputs of a given type, but we cannot just skip the clause
 since there would be no other clauses left.
-\marginnote[-6cm]{%
+\marginnote{%
 \paragraph{On empty types.} Note that it is not possible to
 define a real empty type in Haskell: even if we define a type with no
 constructors, it is still inhabited by \texttt{undefined}, as well as
@@ -1439,7 +1439,7 @@ Agda.}
 \end{description}
 
 
-\marginnote[-3cm]{%
+\marginnote[+4cm]{%
 \paragraph{Propositional logic versus boolean logic.} On the
 surface, the two types $\toptype$ and $\bottomtype$ seem to be very
 similar to the booleans $\true$ and $\false$. However, they have a
